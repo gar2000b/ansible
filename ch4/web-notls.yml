@@ -1,0 +1,36 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Configure webserver with nginx
+  hosts: webservers
+  sudo: True
+  gather_facts: True
+  
+  tasks:
+    - name: install wcalc
+      apt: name=wcalc update_cache=yes
+    - name: install nginx
+      apt: >
+          name=nginx
+          update_cache=no
+    - name: copy nginx config file
+      copy: src=files/nginx.conf dest=/etc/nginx/sites-available/default
+    - name: enable configuration
+      file: >
+        dest=/etc/nginx/sites-enabled/default
+        src=/etc/nginx/sites-available/default
+        state=link
+    - name: copy index.html
+      template: src=templates/index.html.j2 dest=/usr/share/nginx/html/index.html mode=0644
+    - name: restart nginx
+      service: name=nginx state=restarted
+    - name: capture output of whoami command
+      command: whoami
+      register: login
+    - debug: var=login.stdout
+    - debug: msg="The user is {{login.stdout}}"
+    - debug: var=ansible_distribution
+    - name: print ansible_local
+      debug: var=ansible_local
+    - name: print ansible local title
+      debug: var=ansible_local.example.book.title
+
