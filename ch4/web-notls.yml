@@ -5,6 +5,9 @@
   sudo: True
   gather_facts: True
   
+  vars:
+    greeting: "You didn't specify a message"
+  
   tasks:
     - name: install wcalc
       apt: name=wcalc update_cache=yes
@@ -31,6 +34,9 @@
     - debug: var=ansible_distribution
     - name: print ansible_local
       debug: var=ansible_local
+    - set_fact: title={{ ansible_local.example.book.title }}
     - name: print ansible local title
-      debug: var=ansible_local.example.book.title
-
+      debug: var={{ title }}
+    - debug: var=hostvars[inventory_hostname]
+    -  name: output a message
+       debug: msg="{{ greeting }}"
