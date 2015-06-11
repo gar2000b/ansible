@@ -1,0 +1,34 @@
+---
+# tasks file for java
+
+- name: Check for root home dir
+  file: path={{ app_home }} state=directory
+  tags:
+    - java
+
+- name: Add the Java group 
+  group: name={{ java_group }} state=present
+  tags:  java
+
+- name: Add the Java user 
+  user:  name={{ java_user }} shell=/bin/bash createhome=yes group=jboss
+  tags:  java
+
+- name: Download Java packagee"
+  command: creates={{ tmp }}/{{ jdk_package }} wget -O {{ tmp }}/{{ jdk_package }} --no-check-certificate --no-cookies --header 'Cookie:oraclelicense=accept-securebackup-cookie' "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_package_prefix }}/{{ jdk_package }}"
+  tags:
+    - java
+
+- name: "Unpack Java"
+  command: tar -C {{ app_home }} -xzf {{ tmp }}/{{ jdk_package }}
+  tags:
+    - java
+
+- name: Symlink EAP package
+  file:  path={{ java_home }} src="{{ app_home }}/{{ jdk_folder }}" state=link
+  tags:  java
+
+- name: Change file permissions
+  file: path={{ app_home }} owner={{ java_user }} group={{ java_group }} recurse=yes
+  tags: java
+
