@@ -1,0 +1,61 @@
+---
+- name: Create group
+  user: name="{{ jboss_ews_install_group }}" state=present
+
+- name: Create user
+  user: name="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}"
+
+- name: Install httpd.conf
+  sudo: True
+  sudo_user: root
+  template: src=httpd.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/httpd.conf backup=yes
+
+- name: Create vhosts directory
+  file: path="{{ jboss_ews_install_httpd_conf_home }}/vhosts" state=directory owner="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}" 
+
+- name: Install custptlap.conf
+  template: src=custptlap.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/custptlap.conf backup=yes
+
+- name: Install maintenance.conf
+  template: src=maintenance.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/maintenance.conf backup=yes
+
+- name: Install onlineapply.conf
+  template: src=onlineapply.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/onlineapply.conf backup=yes
+  
+- name: Install rewritefilter.conf
+  template: src=rewrite-filter.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/rewrite-filter.conf backup=yes
+
+- name: Install siteimprovements.conf
+  template: src=siteimprovements.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/siteimprovements.conf backup=yes
+
+- name: Install tbredirects.conf
+  template: src=tescobank-redirects.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/tescobank-redirects.conf backup=yes
+  
+- name: Install tfredirects.conf
+  template: src=tf-redirects.conf.j2 dest={{ jboss_ews_install_httpd_conf_home }}/vhosts/tf-redirects.conf backup=yes
+ 
+- name: Change file permissions
+  sudo: True
+  sudo_user: root
+  file: path={{ jboss_ews_install_httpd_home }}  owner="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}" recurse=yes
+
+- name: Adding firewall rule
+  sudo: True
+  sudo_user: root
+  command: /sbin/iptables -I INPUT -p tcp --dport {{ jboss_ews_install_httpd_default_port }} -j ACCEPT -m comment --comment "Apache"
+  sudo: true
+
+- name: Save iptables
+  sudo: True
+  sudo_user: root
+  command: /sbin/service iptables save
+
+- name: Restart iptables
+  sudo: True
+  sudo_user: root
+  service: name=iptables state=restarted
+
+- name: Starting up Apache
+  sudo: True
+  sudo_user: root
+  command: "{{ jboss_ews_install_httpd_home }}/sbin/apachectl -f {{ jboss_ews_install_httpd_conf_home }}/httpd.conf -k restart"

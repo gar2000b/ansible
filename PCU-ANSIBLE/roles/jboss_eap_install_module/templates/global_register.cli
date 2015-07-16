@@ -1,0 +1,8 @@
+# Add the module to global modules
+try 
+	/profile=full/subsystem=ee:read-attribute(name=global-modules,value=[{name={{ item.name }},slot=main}]
+
+catch
+
+	/profile=full/subsystem=ee:write-attribute(name=global-modules,value=[{name={{ item.name }},slot=main}]
+end-try

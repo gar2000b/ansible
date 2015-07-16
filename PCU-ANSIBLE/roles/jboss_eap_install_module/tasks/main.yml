@@ -1,0 +1,73 @@
+---
+- name: Set the JBoss profile 
+  sudo: True
+  sudo_user: root
+  template: src=../templates/bash_profile.j2 dest=/home/jboss/.bash_profile 
+
+- name: Set the JBoss bashrc 
+  sudo: True
+  sudo_user: root
+  template: src=../templates/bashrc.j2 dest=/home/jboss/.bashrc
+ 
+#- name: Copy module deploy files 
+#  template: src=modules_add.cli dest="{{ extract_home }}/{{ module_nexus_artifact_id }}/modules_add.cli" owner=jboss
+#  with_items: module   
+
+#- name: Copy module register files 
+#  template: src=jdbc_register.cli dest="{{ extract_home }}/{{ module_nexus_artifact_id }}/jdbc_register.cli" owner=jboss
+#  with_items: module   
+
+#- name: Install JBoss modules
+#  #shell: "source ~/.bash_profile; {{ jboss_root }}/jbosseap/bin/jboss-cli.sh --connect --user=admin --password=admin --file={{ extract_home }}/{{ module_nexus_artifact_id }}/modules_add.cli"
+#  shell: "source /home/jboss/.bash_profile; {{ jboss_root }}/jbosseap/bin/jboss-cli.sh --file={{ extract_home }}/{{ module_nexus_artifact_id }}/modules_add.cli"
+#  ignore_errors: yes
+
+#- name: Register JBoss modules
+#  shell: "source /home/jboss/.bash_profile; {{ jboss_root }}/jbosseap/bin/jboss-cli.sh --file={{ extract_home }}/{{ module_nexus_artifact_id }}/jdbc_register.cli --connect"
+#  ignore_errors: yes
+
+- name: Creating module config directory
+  file: path='{{ jboss_root }}/jbosseap/modules/com/oracle/jdbc/main' state=directory owner=jboss group=jboss mode=755
+
+- name: Install jdbc module
+  copy: src=module_jdbc.xml dest="{{ jboss_root }}/jbosseap/modules/com/oracle/jdbc/main/module.xml"
+
+- name: Install jdbc driver
+  sudo: True
+  sudo_user: root
+  shell: "cp {{ extract_home }}/{{ module_nexus_artifact_id }}/lib/ojdbc6-1.6.jar {{ jboss_root }}/jbosseap/modules/com/oracle/jdbc/main/"
+  #copy: src="{{ extract_home }}/{{ module_nexus_artifact_id }}/lib/ojdbc6-1.6.jar" dest="{{ jboss_root }}/jbosseap/modules/com/oracle/jdbc/main/ojdbc6-1.6.jar"
+
+- name: Unzip the datagrid modules
+  sudo: True
+  sudo_user: root
+  unarchive: src="{{ extract_home }}/{{ module_nexus_artifact_id }}/lib/{{ jboss_datagrid_modules_archive }}" dest="{{ extract_home }}/{{ module_nexus_artifact_id }}/lib" copy=no
+
+- name: Install the datagrid modules
+  sudo: True
+  sudo_user: root
+  shell: "cp -r  {{ extract_home }}/{{ module_nexus_artifact_id }}/lib/{{ jboss_datagrid_modules_root }}/modules/* {{ jboss_home }}/modules" 
+
+- name: Unzip the kie modules
+  sudo: True
+  sudo_user: root
+  unarchive: src="{{ extract_home }}/{{ module_nexus_artifact_id }}/lib/{{ jboss_kie_modules_archive }}" dest="{{ extract_home }}/{{ module_nexus_artifact_id }}/lib" copy=no
+
+- name: Install the kie modules
+  sudo: True
+  sudo_user: root
+  shell: "cp -r  {{ extract_home }}/{{ module_nexus_artifact_id }}/lib/{{ jboss_kie_modules_root }}/modules/* {{ jboss_home }}/modules"
+
+- name: Install classpath config module
+  copy: src=module.xml dest="{{ jboss_root }}/config/module.xml"
+
+- name: Creating module config directory
+  file: path='{{ jboss_root }}/jbosseap/modules/config' state=directory owner=jboss group=jboss mode=755
+
+- name: Create symlink main to config for classpath properties
+  file:  path='{{ jboss_root }}/jbosseap/modules/config/main' src='{{ jboss_root }}/config' state=link
+
+- name: Start JBoss
+  sudo: True
+  sudo_user: root
+  service: name=jboss state=restarted

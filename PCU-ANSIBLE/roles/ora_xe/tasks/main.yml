@@ -1,0 +1,39 @@
+---
+- name: Fetch oracle package
+  sudo: True
+  sudo_user: root
+  get_url: url={{ oracle_xe_url }} dest=/tmp/ validate_certs=no
+  register: ora
+
+- name: Install Oracle package 
+  sudo: True
+  sudo_user: root
+  yum: name={{ item }} state=installed disable_gpg_check=yes
+  with_items:
+    - "/tmp/oracle-xe-11.2.0-1.0.x86_64.rpm"
+
+- name: Copy response file to server
+  copy: src=response.txt dest=/tmp/response.txt 
+
+- name: Check for oratab
+  stat: path=/etc/oratab
+  register: oratab
+
+- name: Run Oracle initial configuration
+  sudo: True
+  sudo_user: root
+  shell: /etc/init.d/oracle-xe configure responseFile=/tmp/response.txt >>/tmp/oracle_silent_install.log
+
+- name: Copy listener script to server
+  copy: src=set_listener.sql dest=/tmp/set_listener.sql
+
+- name: set oracle listener
+  shell: export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe; /u01/app/oracle/product/11.2.0/xe/bin/sqlplus system/pword@localhost < /tmp/set_listener.sql
+
+- name: Stop Iptables
+  service: name=iptables state=stopped
+
+- name: Restart Oracle
+  sudo: True
+  sudo_user: root
+  service: name=oracle-xe state=restarted

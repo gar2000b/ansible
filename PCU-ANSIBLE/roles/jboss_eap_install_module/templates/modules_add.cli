@@ -1,0 +1,5 @@
+# Register driver as JBoss module (update path to ojdbc6.jar)
+module add --name={{ item.name }} --resources={{ extract_home }}/lib/{{ item.resources }} --dependencies={{ item.dependencies }}
+
+# Add a TIBCO EMS module with the client library JARs
+#module add --name=com.tibco.tibjms --resources=/tmp/tibjms.jar:/tmp/tibcrypt.jar:/tmp/jsse.jar --dependencies=javax.api,javax.jms.api

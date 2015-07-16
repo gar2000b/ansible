@@ -1,0 +1,10 @@
+# Register module as driver
+try 
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=com.oracle.jdbc,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+
+catch
+
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:remove()
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=com.oracle.jdbc,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+
+end-try

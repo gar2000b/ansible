@@ -1,0 +1,59 @@
+---
+- name: Ensure JBoss is stopped
+  service: name=jboss state=stopped
+
+- name: Pull down the template file for upload
+  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/{{ application_config_file }}" dest="/tmp/{{ application_config_file }}" flat=yes fail_on_missing=yes
+  tags: install_tesco_props
+
+- name: Install package supplied configuration into Application configuration directory
+  sudo: True
+  sudo_user: root
+  template: src="/tmp/{{ application_config_file }}" dest="{{ jboss_config }}/{{ application_config_file }}"
+  tags: install_tesco_props
+
+- name: Pull down the url placeholders file for upload
+  sudo: True
+  sudo_user: root
+  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/{{ url_placeholders }}" dest="/tmp/{{ url_placeholders }}" flat=yes fail_on_missing=yes
+
+- name: Install package url placeholders into Application configuration directory
+  sudo: True
+  sudo_user: root
+  template: src="/tmp/{{ url_placeholders }}" dest="{{ jboss_config }}/{{ url_placeholders }}"
+
+- name: Pull down the template file for upload
+  sudo: True
+  sudo_user: root
+  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/{{ jboss_config_file }}" dest="/tmp/{{ jboss_config_file }}" flat=yes failonmissing=yes
+
+- name: Install package supplied configuration into JBoss configuration directory
+  sudo: True
+  sudo_user: root
+  template: src="/tmp/{{ jboss_config_file }}" dest="{{ jboss_standalone_config }}/{{ jboss_config_file }}"
+
+- name: Set permissions
+  sudo: True
+  sudo_user: root
+  command: "chown jboss:jboss {{ item }}"
+  with_items:
+    - "{{ jboss_home }}/standalone/configuration/{{ jboss_config_file }}"
+    - "{{ jboss_config }}/{{ application_config_file }}"
+
+- name: Create keystore directory
+  file: path="{{ jboss_keystores }}" state=directory 
+
+- name: Install keystores
+  copy: src={{ item }} dest="{{ jboss_keystores }}"
+  with_items:
+    - portal_saml_keystore.jks
+    - csso_saml_keystore.jks
+    - cc_saml_keystore.jks
+
+- name: Copy sss-redirects-props
+  shell: "cp -f /tmp/pcu/deploy/sss-deployment-archive/config/saml-url-properties.xml {{ jboss_config }}/saml-url-properties.xml"
+  tags: copy_sss_redirect_props
+
+- name: Install sss-redirects-props
+  shell: "chown jboss:jboss {{ jboss_config }}/saml-url-properties.xml"
+  tags: install_sss_redirect_props

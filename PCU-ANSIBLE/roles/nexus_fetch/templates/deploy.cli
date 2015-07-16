@@ -1,0 +1,11 @@
+try
+	undeploy --name={{ item }}
+catch
+
+end-try
+
+try
+	deploy /tmp/{{ item }}
+catch
+
+end-try

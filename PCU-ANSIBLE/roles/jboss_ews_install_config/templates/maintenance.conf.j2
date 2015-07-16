@@ -1,0 +1,279 @@
+# ---------------------------------------------------------------------------------------------------------------------------
+# ========== Banking OLB ====================================================================================================
+# ---------------------------------------------------------------------------------------------------------------------------
+
+# ---------- Maintenance URL ------------------------------------------------------------------------------------------------
+
+# if someone hits the secret URL, they will be allowed access - not secure (needs to be available on http) but httponly
+RewriteCond %{REQUEST_URI} ^/maintenance/bankingolb$
+RewriteCond ${upstatus:bankingolb|up} !=up [NC]
+RewriteRule ^/maintenance/bankingolb$ / [R,L,CO=tbmaint_bankingolb:1:tescobank.com]
+
+# ---------- Service URLs (service unavailable) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/auth$
+RewriteCond ${upstatus:bankingolb|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingolb=1
+RewriteRule ^/sss/auth$ /servicing/outage/outage.html [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authregister$
+RewriteCond %{QUERY_STRING} ^productType=savings$
+RewriteCond ${upstatus:bankingolb|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingolb=1
+RewriteRule ^/sss/authregister /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+# ---------- Service URLs (planned maintenance) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/auth$
+RewriteCond ${upstatus:bankingolb|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingolb=1
+RewriteRule ^/sss/auth$ /servicing/outage/outage-planned.html [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authregister$
+RewriteCond %{QUERY_STRING} ^productType=savings$
+RewriteCond ${upstatus:bankingolb|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingolb=1
+RewriteRule ^/sss/authregister /servicing/outage/sl-registration-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# ========== Banking Originations ===========================================================================================
+# ---------------------------------------------------------------------------------------------------------------------------
+
+# ---------- Maintenance URL ------------------------------------------------------------------------------------------------
+
+# if someone hits the secret URL, they will be allowed access - not secure (needs to be available on http) but httponly
+RewriteCond %{REQUEST_URI} ^/maintenance/bankingoriginations$
+RewriteCond ${upstatus:bankingoriginations|up} !=up [NC]
+RewriteRule ^/maintenance/bankingoriginations$ / [R,L,CO=tbmaint_bankingoriginations:1:tescobank.com]
+
+# ---------- Service URLs (service unavailable) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/bankingReturn
+RewriteCond ${upstatus:bankingoriginations|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/sss/bankingReturn /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/servicing/pre-register.html$
+RewriteCond %{QUERY_STRING} ^productType=savings$
+RewriteCond ${upstatus:bankingoriginations|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/servicing/pre-register.html /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/portal/(auth/)?portal/customer/loan-apply-calculator
+RewriteCond ${upstatus:bankingoriginations|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/portal/(auth/)?portal/customer/loan-apply-calculator /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} /loans/apply.html$
+RewriteCond ${upstatus:bankingoriginations|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule /loans/apply.html /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+# ---------- Service URLs (planned maintenance) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/bankingReturn
+RewriteCond ${upstatus:bankingoriginations|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/sss/bankingReturn /servicing/outage/sl-registration-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/servicing/pre-register.html$
+RewriteCond %{QUERY_STRING} ^productType=savings$
+RewriteCond ${upstatus:bankingoriginations|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/servicing/pre-register.html /servicing/outage/sl-registration.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/portal/(auth/)?portal/customer/loan-apply-calculator
+RewriteCond ${upstatus:bankingoriginations|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule ^/portal/(auth/)?portal/customer/loan-apply-calculator /servicing/outage/sl-registration-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} /loans/apply.html$
+RewriteCond ${upstatus:bankingoriginations|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_bankingoriginations=1
+RewriteRule /loans/apply.html /servicing/outage/sl-registration-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# ========== CC OLB =========================================================================================================
+# ---------------------------------------------------------------------------------------------------------------------------
+
+# ---------- Maintenance URL ------------------------------------------------------------------------------------------------
+
+# if someone hits the secret URL, they will be allowed access - not secure (needs to be available on http) but httponly
+RewriteCond %{REQUEST_URI} ^/maintenance/ccolb$
+RewriteCond ${upstatus:ccolb|up} !=up [NC]
+RewriteRule ^/maintenance/ccolb$ / [R,L,CO=tbmaint_ccolb:1:tescobank.com]
+
+# ---------- Service URLs (service unavailable) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/authcc$
+RewriteCond ${upstatus:ccolb|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authcc$ /migration/tpf/outage.html [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authregister$
+RewriteCond %{QUERY_STRING} ^productType=creditcards$
+RewriteCond ${upstatus:ccolb|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authregister /migration/tpf/outage.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authbusiness$
+RewriteCond ${upstatus:ccolb|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authbusiness$ /migration/tpf/outage.html [R=307,L,env=MAINTENANCE:1]
+
+# ---------- Service URLs (planned maintenance) -----------------------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} ^/sss/authcc$
+RewriteCond ${upstatus:ccolb|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authcc$ /migration/tpf/outage-planned.html [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authregister$
+RewriteCond %{QUERY_STRING} ^productType=creditcards$
+RewriteCond ${upstatus:ccolb|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authregister /migration/tpf/outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+RewriteCond %{REQUEST_URI} ^/sss/authbusiness$
+RewriteCond ${upstatus:ccolb|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_ccolb=1
+RewriteRule ^/sss/authbusiness$ /migration/tpf/outage-planned.html [R=307,L,env=MAINTENANCE:1]
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# ========== CC Online Apply ================================================================================================
+# ---------------------------------------------------------------------------------------------------------------------------
+
+# ---------- Maintenance URL ------------------------------------------------------------------------------------------------
+
+# if someone hits the secret URL, they will be allowed access - not secure (needs to be available on http) but httponly
+RewriteCond %{REQUEST_URI} ^/maintenance/cconlineapply$
+RewriteCond ${upstatus:cconlineapply|up} !=up [NC]
+RewriteRule ^/maintenance/cconlineapply$ / [R,L,CO=tbmaint_cconlineapply:1:tescobank.com]
+
+# ---------- Service URLs (service unavailable, unplanned outage) -----------------------------------------------------------------------------
+
+#LEGACY CARDS
+RewriteCond %{REQUEST_URI} /cao/cards_[0-9]+.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule /cao/cards_[0-9]+.html /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+#IRISH CARD
+RewriteCond %{REQUEST_URI} ^/portal/portal/cards/ireland$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/portal/portal/cards/ireland  /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+# PURCHASES CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/purchases/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/purchases/apply.html /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+# BALANCE TRANSFER CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/balance-transfer/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/balance-transfer/apply.html  /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+#LOW BT FEE CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/low-fee/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/low-fee/apply.html /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+#LOW APR CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/low-apr/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/low-apr/apply.html /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+# FOUNDATION CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/foundation/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/foundation/apply.html /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+# CARD OFFERS
+RewriteCond %{REQUEST_URI} ^/creditcards/offers/[a-z|0-9]+/?
+RewriteCond ${upstatus:cconlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/creditcards/offers/[a-z|0-9]+/? /servicing/outage/cards-outage.html? [R=307,L,env=MAINTENANCE:1]
+
+
+
+###########################################################################ENd#######################################
+
+# ---------- Service URLs (planned maintenance) -----------------------------------------------------------------------------
+
+#LEGACY CARDS
+RewriteCond %{REQUEST_URI} /cao/cards_[0-9]+.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule /cao/cards_[0-9]+.html /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+#IRISH CARD
+RewriteCond %{REQUEST_URI} ^/portal/portal/cards/ireland$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/portal/portal/cards/ireland  /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+#PURCHASES CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/purchases/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/purchases/apply.html /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+#BALANCE TRANSFER CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/balance-transfer/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/balance-transfer/apply.html  /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+#LOW FEE CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/low-fee/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/low-fee/apply.html /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+# LOW APR CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/low-apr/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/low-apr/apply.html /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+# FOUNDATION CARD
+RewriteCond %{REQUEST_URI} ^/credit-cards/foundation/apply.html$
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/credit-cards/foundation/apply.html  /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+# CARD OFFERS
+RewriteCond %{REQUEST_URI} ^/creditcards/offers/[a-z|0-9]+/?
+RewriteCond ${upstatus:cconlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_cconlineapply=1
+RewriteRule ^/creditcards/offers/[a-z|0-9]+/? /servicing/outage/cards-outage-planned.html? [R=307,L,env=MAINTENANCE:1]
+
+
+###########################################################################ENd############################################
+
+
+RewriteCond %{REQUEST_URI} ^/maintenance/voyager$
+RewriteCond ${upstatus:voyager|up} !=up [NC]
+RewriteRule ^/maintenance/voyager$ / [R,L,CO=tbmaint_voyager:1:tescobank.com]
+
+RewriteCond %{REQUEST_URI} ^/maintenance/creditcare$
+RewriteCond ${upstatus:creditcare|up} !=up [NC]
+RewriteRule ^/maintenance/creditcare$ / [R,L,CO=tbmaint_creditcare:1:tescobank.com]
+
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# ==========PCA Online Apply ================================================================================================
+# ---------------------------------------------------------------------------------------------------------------------------
+
+# ---------- Maintenance URL ------------------------------------------------------------------------------------------------
+
+# if someone hits the secret URL, they will be allowed access - not secure (needs to be available on http) but httponly
+RewriteCond %{REQUEST_URI} ^/maintenance/pcaonlineapply$
+RewriteCond ${upstatus:pcaonlineapply|up} !=up [NC]
+RewriteRule ^/maintenance/pcaonlineapply$ / [R,L,CO=tbmaint_pcaonlineapply:1:tescobank.com]
+
+# ---------- Service URLs (service unavailable, unplanned outage) -----------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI} ^/current-accounts/apply-online.html$
+RewriteCond ${upstatus:pcaonlineapply|up} =down [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_pcaonlineapply=1
+RewriteRule ^/current-accounts/apply-online.html  /servicing/outage/pca-nao.html? [R=307,L,env=MAINTENANCE:1]
+
+# ---------- Service URLs (planned maintenance) -----------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI} ^/current-accounts/apply-online.html$
+RewriteCond ${upstatus:pcaonlineapply|up} =maintenance [NC]
+RewriteCond %{HTTP_COOKIE} !tbmaint_pcaonlineapply=1
+RewriteRule ^/current-accounts/apply-online.html  /servicing/outage/pca-nao-planned.html? [R=307,L,env=MAINTENANCE:1]
+

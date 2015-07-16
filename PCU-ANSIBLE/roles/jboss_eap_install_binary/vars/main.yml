@@ -1,0 +1,6 @@
+eap_major_version: jboss-eap-6.3
+eap_minor_version: 0
+eap_package: "{{ eap_major_version }}.{{ eap_minor_version }}.zip"
+jboss_root: /opt/jboss
+broker_config: "{{ jboss_root }}/config"
+broker_scripts: "{{ jboss_root }}/scripts"

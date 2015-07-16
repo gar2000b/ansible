@@ -1,0 +1,19 @@
+---
+- name: Make sql directory
+  file: path="{{ temp_sql }}" state=directory
+
+- name: Copy sql files to server
+  copy: src="{{ item }}" dest="{{ temp_sql }}"
+  with_fileglob: 
+    - ./*.sql 
+
+- name: Copy and tokenize create schema script
+  template: src=portal_create_schema_ora.sql.j2 dest="{{ temp_sql }}/portal_create_schema_ora.sql"
+
+- name: Copy run script to server
+  copy: src=run.sh dest="{{ temp_sql }}" mode=755
+
+- name: Run schema script 
+  sudo: True
+  sudo_user: root
+  command: "{{ temp_sql }}/run.sh"

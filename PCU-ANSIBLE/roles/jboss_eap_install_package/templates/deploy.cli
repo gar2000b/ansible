@@ -1,0 +1,1 @@
+deploy {{ extract_home }}/{{ install_nexus_artifact_id }}/bin/{{ item }} --force

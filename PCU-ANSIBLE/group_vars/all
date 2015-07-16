@@ -1,0 +1,13 @@
+domain: example
+
+# database properties
+pcao_password: Ikaga1li
+tbcwp_sss_password: Ikaga1li 
+
+ansible_facts_dir: /etc/ansible/facts.d
+download_home: /tmp/pcu
+extract_home: /tmp/pcu/deploy
+extract_home_bin: "{{ extract_home }}/bin"
+extract_home_lib: "{{ extract_home }}/lib"
+extract_home_scripts: "{{ extract_home }}/scripts"
+extract_home_config: "{{ extract_home }}/config"

@@ -1,0 +1,6 @@
+# TB Nexus 
+[tescobank-nexus]
+name=Tesco Bank Nexus Repository
+baseurl=http://yumuser:T35c0Bank@nexus.tbdevops.com/nexus/content/repositories/vendor-licenced/
+enabled=1
+gpgcheck=0

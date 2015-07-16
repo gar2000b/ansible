@@ -1,0 +1,493 @@
+# Rules for the individual new CMS structure pages:
+RewriteEngine On
+
+#### SECTION ONE #####
+
+# Redirects for retiring phase 1 pages:
+#RewriteRule ^/current-accounts/ /sites/current-accounts/index.html [PT,NC,L]
+RewriteRule ^/current-accounts/overdraft.html /sites/current-accounts/overdraft.html [PT,NC,L]
+RewriteRule ^/mortgages/product-selector.html /sites/mortgages/product-selector.html [PT,NC,L]
+RewriteRule ^/mortgages/how-much-can-i-borrow-calculator.html /sites/mortgages/how-much-can-i-borrow-calculator.html [PT,NC,L]
+RewriteRule ^/creditcards/rewards.html /sites/creditcards/rewards.html [PT,NC,L]
+RewriteRule ^/home/home\.html$  / [R=301,NC]
+RewriteRule ^/home/index\.html$ / [R=301,NC]
+RewriteRule ^/home\.html$ / [R=301,NC]
+RewriteRule ^/home/     / [R=301,NC]
+RewriteRule ^/website / [R=301,NC]
+RewriteRule ^/creditcards/compare\.html$        /credit-cards/compare.html [R=301,NC]
+RewriteRule ^/creditcards\/$ /credit-cards/ [R=301,NC]
+RewriteRule ^/creditcards$ /credit-cards/ [R=301,NC]
+RewriteRule ^/creditcards/index\.html$  /credit-cards/ [R=301,NC]
+RewriteRule ^/creditcards/bt/apply\.html$       /credit-cards/balance-transfer/apply.html [R=301,NC]
+RewriteRule ^/creditcards/bt/card-select\.html$ /credit-cards/balance-transfer/apply.html [R=301,NC]
+RewriteRule ^/creditcards/bt/index\.html$       /credit-cards/balance-transfer/index.html [R=301,NC]
+RewriteRule ^/creditcards/clubcc/apply\.html$   /credit-cards/purchases/apply.html [R=301,NC]
+RewriteRule ^/creditcards/clubcc/card-select\.html$     /credit-cards/purchases/apply.html [R=301,NC]
+RewriteRule ^/creditcards/clubcc/index\.html$   /credit-cards/purchases/index.html [R=301,NC]
+RewriteRule ^/creditcards/foundation/apply\.html$       /credit-cards/foundation/apply.html [R=301,NC]
+RewriteRule ^/creditcards/foundation/card-select\.html$ /credit-cards/foundation/apply.html [R=301,NC]
+RewriteRule ^/creditcards/foundation/index\.html$       /credit-cards/foundation/index.html [R=301,NC]
+RewriteRule ^/creditcards/lowapr/apply\.html$   /credit-cards/low-apr/apply.html [R=301,NC]
+RewriteRule ^/creditcards/lowapr/card-select\.html$     /credit-cards/low-apr/apply.html [R=301,NC]
+RewriteRule ^/creditcards/lowapr/index\.html$   /credit-cards/low-apr/index.html [R=301,NC]
+RewriteRule ^/creditcards/lowfee/apply\.html$   /credit-cards/low-fee/apply.html [R=301,NC]
+RewriteRule ^/creditcards/lowfee/card-select\.html$     /credit-cards/low-fee/apply.html [R=301,NC]
+RewriteRule ^/creditcards/lowfee/index\.html$   /credit-cards/low-fee/index.html [R=301,NC]
+RewriteRule ^/insurance/index\.html$    /insurance/ [R=301,NC]
+RewriteRule ^/insurance/box/apply\.html$        /car-insurance/young-drivers/apply.html [R=301,NC]
+RewriteRule ^/insurance/box/index\.html$        /car-insurance/young-drivers/index.html [R=301,NC]
+RewriteRule ^/insurance/carins/apply\.html$     /car-insurance/standard/apply.html [R=301,NC]
+RewriteRule ^/insurance/carins/index\.html$     /car-insurance/standard/index.html [R=301,NC]
+RewriteRule ^/insurance/carins/young-drivers\.html$     /car-insurance/young-drivers/index.html [R=301,NC]
+
+# Redirects for /sec/ retiring phase 1 pages to stop people hitting sec bookmarks:
+RewriteRule ^/sec/home/home\.html$  / [R=301,NC]
+RewriteRule ^/sec/home/index\.html$ / [R=301,NC]
+RewriteRule ^/sec/home\.html$ / [R=301,NC]
+RewriteRule ^/sec/home/     / [R=301,NC]
+RewriteRule ^/sec/website / [R=301,NC]
+RewriteRule ^/sec/creditcards/compare\.html$        /credit-cards/compare.html [R=301,NC]
+RewriteRule ^/sec/creditcards\/$ /credit-cards/ [R=301,NC]
+RewriteRule ^/sec/creditcards$ /credit-cards/ [R=301,NC]
+RewriteRule ^/sec/creditcards/index\.html$  /credit-cards/ [R=301,NC]
+RewriteRule ^/sec/creditcards/bt/apply\.html$       /credit-cards/balance-transfer/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/bt/card-select\.html$ /credit-cards/balance-transfer/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/bt/index\.html$       /credit-cards/balance-transfer/index.html [R=301,NC]
+RewriteRule ^/sec/creditcards/clubcc/apply\.html$   /credit-cards/purchases/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/clubcc/card-select\.html$     /credit-cards/purchases/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/clubcc/index\.html$   /credit-cards/purchases/index.html [R=301,NC]
+RewriteRule ^/sec/creditcards/foundation/apply\.html$       /credit-cards/foundation/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/foundation/card-select\.html$ /credit-cards/foundation/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/foundation/index\.html$       /credit-cards/foundation/index.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowapr/apply\.html$   /credit-cards/low-apr/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowapr/card-select\.html$     /credit-cards/low-apr/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowapr/index\.html$   /credit-cards/low-apr/index.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowfee/apply\.html$   /credit-cards/low-fee/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowfee/card-select\.html$     /credit-cards/low-fee/apply.html [R=301,NC]
+RewriteRule ^/sec/creditcards/lowfee/index\.html$   /credit-cards/low-fee/index.html [R=301,NC]
+RewriteRule ^/sec/insurance/index\.html$    /insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/box/apply\.html$        /car-insurance/young-drivers/apply.html [R=301,NC]
+RewriteRule ^/sec/insurance/box/index\.html$        /car-insurance/young-drivers/index.html [R=301,NC]
+RewriteRule ^/sec/insurance/carins/apply\.html$     /car-insurance/standard/apply.html [R=301,NC]
+RewriteRule ^/sec/insurance/carins/index\.html$     /car-insurance/standard/index.html [R=301,NC]
+RewriteRule ^/sec/insurance/carins/young-drivers\.html$     /car-insurance/young-drivers/index.html [R=301,NC]
+
+# Redirects for retiring phase 2 pages (non-SEC):
+RewriteRule ^/savings/index.html$ /savings/ [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/internetsaver/index.html$ /savings/flexible/internet-saver/index.html [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/internetsaver/summary-box.html$ /savings/flexible/internet-saver/index.html [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/internetsaver/apply.html$ /savings/flexible/internet-saver/apply.html [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/instantaccess/index.html$ /savings/flexible/instant-access/index.html [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/instantaccess/summary-box.html$ /savings/flexible/instant-access/index.html [R=301,NC]
+RewriteRule ^/savings/savingsaccounts/instantaccess/apply.html$ /savings/flexible/instant-access/apply.html [R=301,NC]
+RewriteRule ^/savings/fixedratesaver/index.html$ /savings/fixed/fixed-rate-saver/index.html [R=301,NC]
+RewriteRule ^/savings/fixedratesaver/apply.html$ /savings/fixed/fixed-rate-saver/apply.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/index.html$ /savings/isa-accounts/ [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/instant-access-isa.html$ /savings/isa-accounts/instant-access/index.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/instant-access-apply.html$ /savings/isa-accounts/instant-access/apply.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/instant-access-summary-box.html$ /savings/isa-accounts/instant-access/index.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/fixed-rate-isa.html$ /savings/isa-accounts/fixed-rate/index.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/fixed-rate-apply.html$ /savings/isa-accounts/fixed-rate/apply.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/cash-isa/fixed-rate-summary-box.html$ /savings/isa-accounts/fixed-rate/index.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/junior-isa/index.html$ /savings/isa-accounts/junior/index.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/junior-isa/apply.html$ /savings/isa-accounts/junior/apply.html [R=301,NC]
+RewriteRule ^/savings/isa-accounts/junior-isa/summary-box.html$ /savings/isa-accounts/junior/index.html [R=301,NC]
+RewriteRule ^/tools/customer-support/$ /support/existing-customers/ [R=301,NC]
+RewriteRule ^/loans/index.html$ /loans/ [R=301,NC]
+RewriteRule ^/savings/fixed/index.html$ /savings/fixed/ [R=301,NC]
+RewriteRule ^/savings/flexible/index.html$ /savings/flexible/ [R=301,NC]
+
+# Redirects for retiring /SEC/ phase 2 pages to stop people hitting sec bookmarks:
+RewriteRule ^/sec/savings/index.html$ /savings/ [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/internetsaver/index.html$ /savings/flexible/internet-saver/index.html [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/internetsaver/summary-box.html$ /savings/flexible/internet-saver/index.html [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/internetsaver/apply.html$ /savings/flexible/internet-saver/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/instantaccess/index.html$ /savings/flexible/instant-access/index.html [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/instantaccess/summary-box.html$ /savings/flexible/instant-access/index.html [R=301,NC]
+RewriteRule ^/sec/savings/savingsaccounts/instantaccess/apply.html$ /savings/flexible/instant-access/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/fixedratesaver/index.html$ /savings/fixed/fixed-rate-saver/index.html [R=301,NC]
+RewriteRule ^/sec/savings/fixedratesaver/apply.html$ /savings/fixed/fixed-rate-saver/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/index.html$ /savings/isa-accounts/ [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/instant-access-isa.html$ /savings/isa-accounts/instant-access/index.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/instant-access-apply.html$ /savings/isa-accounts/instant-access/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/instant-access-summary-box.html$ /savings/isa-accounts/instant-access/index.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/fixed-rate-isa.html$ /savings/isa-accounts/fixed-rate/index.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/fixed-rate-apply.html$ /savings/isa-accounts/fixed-rate/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/cash-isa/fixed-rate-summary-box.html$ /savings/isa-accounts/fixed-rate/index.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/junior-isa/index.html$ /savings/isa-accounts/junior/index.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/junior-isa/apply.html$ /savings/isa-accounts/junior/apply.html [R=301,NC]
+RewriteRule ^/sec/savings/isa-accounts/junior-isa/summary-box.html$ /savings/isa-accounts/junior/index.html [R=301,NC]
+RewriteRule ^/sec/tools/customer-support/$ /support/existing-customers/ [R=301,NC]
+RewriteRule ^/sec/loans/index.html$ /loans/ [R=301,NC]
+RewriteRule ^/sec/savings/fixed/index.html$ /savings/fixed/ [R=301,NC]
+RewriteRule ^/sec/savings/flexible/index.html$ /savings/flexible/ [R=301,NC]
+
+
+#Redirects for retiring phase three pages (non-SEC):
+RewriteRule ^/travel/travelmoney/index.html /travel-money/ [R=301,NC]
+RewriteRule ^/travel/travelmoney/buy-online-or-phone.html /travel-money/buy-online/ [R=301,NC]
+RewriteRule ^/travel/travelmoney/travel-money-bureaux.html /travel-money/buy-in-store/ [R=301,NC]
+RewriteRule ^/travelmoney$ /travel-money/ [R=301,NC]
+RewriteRule ^/travel$ /travel-insurance/ [R=301,NC]
+RewriteRule ^/travel/$ /travel-money/ [R=301,NC]
+RewriteRule ^/insurance/travelins/index.html$ /travel-insurance/ [R=301,NC]
+RewriteRule ^/insurance/travelins/apply.html /travel-insurance/apply.html [R=301,NC]
+RewriteRule ^/travel/index.html /travel-money/ [R=301,NC]
+
+
+#Redirects for retiring /SEC/ phase three pages to stop people hitting sec bookmarks:
+RewriteRule ^/sec/travel/travelmoney/index.html /sec/travel-money/ [R=301,NC]
+RewriteRule ^/sec/travel/travelmoney/buy-online-or-phone.html /sec/travel-money/buy-online/ [R=301,NC]
+RewriteRule ^/sec/travel/travelmoney/travel-money-bureaux.html /sec/travel-money/buy-in-store/ [R=301,NC]
+RewriteRule ^/sec/travelmoney$ /sec/travel-money/ [R=301,NC]
+RewriteRule ^/sec/travel$ /sec/travel-insurance/ [R=301,NC]
+RewriteRule ^/sec/travel/$ /sec/travel-money/ [R=301,NC]
+RewriteRule ^/sec/insurance/travelins/index.html$ /sec/travel-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/travelins/apply.html /sec/travel-insurance/apply.html [R=301,NC]
+RewriteRule ^/sec/travel/index.html /sec/travel-money/ [R=301,NC]
+
+#Redirects for retiring phase four pages (non-SEC):
+RewriteRule ^/insurance/petins/index.html		/pet-insurance/ [R=301,NC]
+RewriteRule ^/insurance/petins/standard-and-extra.html		/pet-insurance/ [R=301,NC]
+RewriteRule ^/insurance/petins/accident-and-injury.html		/pet-insurance/ [R=301,NC]
+RewriteRule ^/insurance/petins/apply.html		/pet-insurance/apply.html [R=301,NC]
+RewriteRule ^/insurance/petins/compare-cover.html		/pet-insurance/compare-cover.html [R=301,NC]
+RewriteRule ^/pet$		/pet-insurance/ [R=301,NC]
+
+RewriteRule ^/insurance/homeins/index.html		/home-insurance/ [R=301,NC]
+RewriteRule ^/insurance/homeins/apply.html		/home-insurance/apply.html [R=301,NC]
+RewriteRule ^/insurance/homeins/whats-covered.html		/home-insurance/ [R=301,NC]
+RewriteRule ^/insurance/homeins/optional-extras.html		/home-insurance/ [R=301,NC]
+RewriteRule ^/insurance/homeins/extended-accidental-damage.html		/home-insurance/ [R=301,NC]
+RewriteRule ^/insurance/homeins/cover-away-from-home.html		/home-insurance/contents/ [R=301,NC]
+RewriteRule ^/insurance/homeins/bicycle-cover.html		/home-insurance/contents/ [R=301,NC]
+RewriteRule ^/insurance/homeins/home-emergency-cover.html		/home-insurance/ [R=301,NC]
+RewriteRule ^/home-insurance$		/home-insurance/ [R=301,NC]
+
+
+#Redirects for retiring /SEC/ phase four pages to stop people hitting sec bookmarks:
+RewriteRule ^/sec/insurance/petins/index.html		/sec/pet-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/petins/standard-and-extra.html		/sec/pet-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/petins/accident-and-injury.html		/sec/pet-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/petins/apply.html		/sec/pet-insurance/apply.html [R=301,NC]
+RewriteRule ^/sec/insurance/petins/compare-cover.html		/sec/pet-insurance/compare-cover.html [R=301,NC]
+RewriteRule ^/sec/pet$		/sec/pet-insurance/ [R=301,NC]
+
+RewriteRule ^/sec/insurance/homeins/index.html		/sec/home-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/apply.html		/sec/home-insurance/apply.html [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/whats-covered.html		/sec/home-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/optional-extras.html		/sec/home-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/extended-accidental-damage.html		/sec/home-insurance/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/cover-away-from-home.html		/sec/home-insurance/contents/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/bicycle-cover.html		/sec/home-insurance/contents/ [R=301,NC]
+RewriteRule ^/sec/insurance/homeins/home-emergency-cover.html		/sec/home-insurance/ [R=301,NC]
+RewriteRule ^/sec/home-insurance$		/sec/home-insurance/ [R=301,NC]
+
+
+
+#### SECTION TWO #####
+
+########################################
+#### Home & NBL & "other" Category #####
+########################################
+
+RewriteRule ^/errors/error404.html /sites/errors/error404.html
+RewriteRule ^/errors/error500.html /sites/errors/error500.html
+
+#### Home ####
+RewriteRule ^/$ /sites/website/index.html [PT,NC,L]
+RewriteRule ^/sec/$ /sec/website/index.html [PT,NC,L]
+
+RewriteRule ^/home\.html$ /website/index.html [PT,NC,L]
+RewriteRule ^/sec/home\.html$ /sec/website/index.html [PT,NC,L]
+
+RewriteRule ^/index\.html$ /website/index.html [PT,NC,L]
+RewriteRule ^/sec/index\.html$ /sec/website/index.html [PT,NC,L]
+
+#### Bank ####
+RewriteRule ^/bank/ /website/bank.html [PT,NC,L]
+RewriteRule ^/sec/bank/ /sec/website/bank.html [PT,NC,L]
+
+#### Borrow ####
+RewriteRule ^/borrow/ /sites/website/borrow.html [PT,NC,L]
+RewriteRule ^/sec/borrow/ /sec/website/borrow.html [PT,NC,L]
+
+#### Insure ####
+RewriteRule ^/insurance\/$ /website/insurance.html [PT,NC,L]
+RewriteRule ^/sec/insurance/$ /sec/website/insurance.html [PT,NC,L]
+
+##### Cards - Tools & Help - credit card ####
+RewriteRule ^/tools/credit-card-guides/ /website/tools/credit-card-guides.html [PT,NC,L]
+RewriteRule ^/sec/tools/credit-card-guides/ /sec/website/tools/credit-card-guides.html [PT,NC,L]
+
+#### Car - tools & help - car ins ####
+RewriteRule ^/tools/car-insurance-guides/ /website/tools/car-insurance-guides.html [PT,NC,L]
+RewriteRule ^/sec/tools/car-insurance-guides/ /sec/website/tools/car-insurance-guides.html [PT,NC,L]
+
+#### Car - tools & help - tools & calc ####
+RewriteRule ^/tools/tools-and-calculators/ /website/tools/tools-and-calculators.html [PT,NC,L]
+RewriteRule ^/sec/tools/tools-and-calculators/ /sec/website/tools/tools-and-calculators.html [PT,NC,L]
+
+########################################
+####       Credit Card             #####
+########################################
+
+#### Credit Card Category ####
+RewriteRule ^/credit-cards/$ /sites/website/credit-cards/index.html [PT,NC,L]
+RewriteRule ^/credit-cards/index\.html$ /website/credit-cards/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/$ /sec/website/credit-cards/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/index\.html$ /sec/website/credit-cards/index.html [PT,NC,L]
+
+#### Purchases card ####
+RewriteRule ^/credit-cards/purchases/index\.html$ /website/credit-cards/purchases/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/purchases/index\.html$ /sec/website/credit-cards/purchases/index.html [PT,NC,L]
+
+#### Balance transfer card ####
+RewriteRule ^/credit-cards/balance-transfer/index\.html$ /website/credit-cards/balance-transfer/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/balance-transfer/index\.html$ /sec/website/credit-cards/balance-transfer/index.html [PT,NC,L]
+
+#### Low transfer card ####
+RewriteRule ^/credit-cards/low-fee/index\.html$ /website/credit-cards/low-fee/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/low-fee/index\.html$ /sec/website/credit-cards/low-fee/index.html [PT,NC,L]
+
+#### Low APR card ####
+RewriteRule ^/credit-cards/low-apr/index\.html$ /website/credit-cards/low-apr/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/low-apr/index\.html$ /sec/website/credit-cards/low-apr/index.html [PT,NC,L]
+
+#### Foundation Card ####
+RewriteRule ^/credit-cards/foundation/index\.html$ /sites/website/credit-cards/foundation/index.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/foundation/index\.html$ /sec/website/credit-cards/foundation/index.html [PT,NC,L]
+
+#### Purchases card Pre Apply Page ####
+RewriteRule ^/credit-cards/purchases/apply\.html$ /website/credit-cards/purchases/apply.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/purchases/apply\.html$ /sec/website/credit-cards/purchases/apply.html [PT,NC,L]
+
+#### Balance transfer card Pre Apply Page ####
+RewriteRule ^/credit-cards/balance-transfer/apply\.html$ /website/credit-cards/balance-transfer/apply.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/balance-transfer/apply\.html$ /sec/website/credit-cards/balance-transfer/apply.html [PT,NC,L]
+
+#### Low transfer card Pre Apply Page ####
+RewriteRule ^/credit-cards/low-fee/apply\.html$ /website/credit-cards/low-fee/apply.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/low-fee/apply\.html$ /sec/website/credit-cards/low-fee/apply.html [PT,NC,L]
+
+#### Low APR card Pre Apply Page ####
+RewriteRule ^/credit-cards/low-apr/apply\.html$ /website/credit-cards/low-apr/apply.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/low-apr/apply\.html$ /sec/website/credit-cards/low-apr/apply.html [PT,NC,L]
+
+#### Foundation Card Pre Apply Page ####
+RewriteRule ^/credit-cards/foundation/apply\.html$ /website/credit-cards/foundation/apply.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/foundation/apply\.html$ /sec/website/credit-cards/foundation/apply.html [PT,NC,L]
+
+#### Offer Landing Page for any card ####
+RewriteRule ^/credit-cards/(.*)/offer\.html$ /website/credit-cards/$1/offer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/(.*)/offer\.html$ /sec/website/credit-cards/$1/offer.html [PT,NC,L]
+
+#### Comparison tool page ####
+RewriteRule ^/credit-cards/compare\.html$ /website/credit-cards/compare.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/compare\.html$ /sec/website/credit-cards/compare.html [PT,NC,L]
+
+########################################
+####       Car Insurance           #####
+########################################
+
+#### Car Insurance Category ####
+RewriteRule ^/car-insurance/$ /website/car-insurance/index.html [PT,NC,L]
+RewriteRule ^/car-insurance/index\.html$ /website/car-insurance/index.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/$ /sec/website/car-insurance/index.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/index\.html$ /sec/website/car-insurance/index.html [PT,NC,L]
+
+#### General Car Insurance ####
+RewriteRule ^/car-insurance/standard/index\.html$ /website/car-insurance/standard/index.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/standard/index\.html$ /sec/website/car-insurance/standard/index.html [PT,NC,L]
+
+#### Box Insurance ####
+RewriteRule ^/car-insurance/young-drivers/index\.html$ /website/car-insurance/young-drivers/index.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/young-drivers/index\.html$ /sec/website/car-insurance/young-drivers/index.html [PT,NC,L]
+
+#### Car Pre Quote for STANDARD ####
+RewriteRule ^/car-insurance/standard/apply\.html$ /website/car-insurance/standard/apply.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/standard/apply\.html$ /sec/website/car-insurance/standard/apply.html [PT,NC,L]
+
+#### Car Pre Quote for BOX ####
+RewriteRule ^/car-insurance/young-drivers/apply\.html$ /website/car-insurance/young-drivers/apply.html [PT,NC,L]
+RewriteRule ^/sec/car-insurance/young-drivers/apply\.html$ /sec/website/car-insurance/young-drivers/apply.html [PT,NC,L]
+
+#### Car catch-all ####
+RewriteRule ^/car-insurance/(.*)$ /website/car-insurance/$1 [PT,NC,L]
+RewriteRule ^/sec/car-insurance/(.*)$ /sec/website/car-insurance/$1 [PT,NC,L]
+
+#### END SI2      ##################################################
+
+
+##### PHASE TWO RE-WRITES - START #####
+# RE-WRITES for phase 2 non-SEC:
+RewriteRule ^/savings/$ /website/savings.html [PT,NC,L]
+RewriteRule ^/loans/$ /sites/website/loans/index.html [PT,NC,L]
+RewriteRule ^/tools/loans-guides/$ /website/tools/loans-guides.html [PT,NC,L]
+RewriteRule ^/savings/fixed/$ /website/savings/fixed/index.html [PT,NC,L]
+RewriteRule ^/savings/fixed/fixed-rate-saver/index.html$ /website/savings/fixed/fixed-rate-saver/index.html [PT,NC,L]
+RewriteRule ^/savings/fixed/fixed-rate-saver/apply.html$ /website/savings/fixed/fixed-rate-saver/apply.html [PT,NC,L]
+RewriteRule ^/savings/flexible/$ /website/savings/flexible/index.html [PT,NC,L]
+RewriteRule ^/savings/flexible/internet-saver/index.html$ /website/savings/flexible/internet-saver/index.html [PT,NC,L]
+RewriteRule ^/savings/flexible/internet-saver/apply.html$ /website/savings/flexible/internet-saver/apply.html [PT,NC,L]
+RewriteRule ^/savings/flexible/instant-access/index.html$ /website/savings/flexible/instant-access/index.html [PT,NC,L]
+RewriteRule ^/savings/flexible/instant-access/apply.html$ /website/savings/flexible/instant-access/apply.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/$ /website/savings/isa-accounts/index.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/instant-access/index.html$ /website/savings/isa-accounts/instant-access/index.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/instant-access/apply.html$ /website/savings/isa-accounts/instant-access/apply.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/fixed-rate/index.html$ /website/savings/isa-accounts/fixed-rate/index.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/fixed-rate/apply.html$ /website/savings/isa-accounts/fixed-rate/apply.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/junior/index.html$ /website/savings/isa-accounts/junior/index.html [PT,NC,L]
+RewriteRule ^/savings/isa-accounts/junior/apply.html$ /website/savings/isa-accounts/junior/apply.html [PT,NC,L]
+RewriteRule ^/savings/compare-rates.html$ /website/savings/compare-rates.html [PT,NC,L]
+RewriteRule ^/tools/savings-guides/$ /website/tools/savings-guides.html [PT,NC,L]
+RewriteRule ^/support/existing-customers/$ /website/support/existing-customers.html [PT,NC,L]
+
+# RE-WRITES for phase 2 /sec/ to keep the /sec/ :
+RewriteRule ^/sec/savings/$ /sec/website/savings.html [PT,NC,L]
+RewriteRule ^/sec/loans/$ /sec/website/loans/index.html [PT,NC,L]
+RewriteRule ^/sec/tools/loans-guides/$ /sec/website/tools/loans-guides.html [PT,NC,L]
+RewriteRule ^/sec/savings/fixed/$ /sec/website/savings/fixed/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/fixed/fixed-rate-saver/index.html$ /sec/website/savings/fixed/fixed-rate-saver/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/fixed/fixed-rate-saver/apply.html$ /sec/website/savings/fixed/fixed-rate-saver/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/flexible/$ /sec/website/savings/flexible/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/flexible/internet-saver/index.html$ /sec/website/savings/flexible/internet-saver/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/flexible/internet-saver/apply.html$ /sec/website/savings/flexible/internet-saver/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/flexible/instant-access/index.html$ /sec/website/savings/flexible/instant-access/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/flexible/instant-access/apply.html$ /sec/website/savings/flexible/instant-access/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/$ /sec/website/savings/isa-accounts/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/instant-access/index.html$ /sec/website/savings/isa-accounts/instant-access/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/instant-access/apply.html$ /sec/website/savings/isa-accounts/instant-access/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/fixed-rate/index.html$ /sec/website/savings/isa-accounts/fixed-rate/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/fixed-rate/apply.html$ /sec/website/savings/isa-accounts/fixed-rate/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/junior/index.html$ /sec/website/savings/isa-accounts/junior/index.html [PT,NC,L]
+RewriteRule ^/sec/savings/isa-accounts/junior/apply.html$ /sec/website/savings/isa-accounts/junior/apply.html [PT,NC,L]
+RewriteRule ^/sec/savings/compare-rates.html$ /sec/website/savings/compare-rates.html [PT,NC,L]
+RewriteRule ^/sec/tools/sec/savings-guides/$ /sec/website/tools/savings-guides.html [PT,NC,L]
+RewriteRule ^/sec/support/existing-customers/$ /sec/website/support/existing-customers.html [PT,NC,L]
+
+##### PHASE TWO RE-WRITES - END #####
+
+##### PHASE THREE RE-WRITES - START #####
+#rewrites
+RewriteRule ^/travel-money/$ /website/travel-money/index.html [PT,NC,L]
+RewriteRule ^/travel-money/buy-online/$ /website/travel-money/buy-online/index.html [PT,NC,L]
+RewriteRule ^/travel-money/buy-in-store/$ /website/travel-money/buy-in-store/index.html [PT,NC,L]
+RewriteRule ^/travel-insurance/$ /website/travel-insurance/index.html [PT,NC,L]
+RewriteRule ^/travel-insurance/single-trip/$ /website/travel-insurance/single-trip/index.html [PT,NC,L]
+RewriteRule ^/travel-insurance/annual/$ /website/travel-insurance/annual/index.html [PT,NC,L]
+RewriteRule ^/travel-insurance/apply.html$ /website/travel-insurance/apply.html [PT,NC,L]
+RewriteRule ^/travel-insurance/compare-cover.html$ /website/travel-insurance/compare-cover.html [PT,NC,L]
+RewriteRule ^/tools/travel-insurance-guides.html$ /website/tools/travel-insurance-guides.html [PT,NC,L]
+
+RewriteRule ^/sec/travel-money/$ /sec/website/travel-money/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-money/buy-online/$ /sec/website/travel-money/buy-online/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-money/buy-in-store/$ /sec/website/travel-money/buy-in-store/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-insurance/$ /sec/website/travel-insurance/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-insurance/single-trip/$ /sec/website/travel-insurance/single-trip/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-insurance/annual/$ /sec/website/travel-insurance/annual/index.html [PT,NC,L]
+RewriteRule ^/sec/travel-insurance/apply.html$ /sec/website/travel-insurance/apply.html [PT,NC,L]
+RewriteRule ^/sec/travel-insurance/compare-cover.html$ /sec/website/travel-insurance/compare-cover.html [PT,NC,L]
+RewriteRule ^/sec/tools/travel-insurance-guides.html$ /sec/website/tools/travel-insurance-guides.html [PT,NC,L]
+
+##### PHASE THREE RE-WRITES - END #####
+
+##### PHASE FOUR RE-WRITES - START #####
+RewriteRule ^/pet-insurance/$	/website/pet-insurance/index.html [PT,NC,L]
+RewriteRule ^/pet-insurance/cat/$	/website/pet-insurance/cat/index.html [PT,NC,L]
+RewriteRule ^/pet-insurance/dog/$	/website/pet-insurance/dog/index.html [PT,NC,L]
+RewriteRule ^/pet-insurance/apply.html	/website/pet-insurance/apply.html [PT,NC,L]
+RewriteRule ^/pet-insurance/compare-cover.html	/website/pet-insurance/compare-cover.html [PT,NC,L]
+RewriteRule ^/tools/pet-insurance-guides.html	/website/tools/pet-insurance-guides.html [PT,NC,L]
+
+RewriteRule ^/sec/pet-insurance/$	/sec/website/pet-insurance/index.html [PT,NC,L]
+RewriteRule ^/sec/pet-insurance/cat/$	/sec/website/pet-insurance/cat/index.html [PT,NC,L]
+RewriteRule ^/sec/pet-insurance/dog/$	/sec/website/pet-insurance/dog/index.html [PT,NC,L]
+RewriteRule ^/sec/pet-insurance/apply.html	/sec/website/pet-insurance/apply.html [PT,NC,L]
+RewriteRule ^/sec/pet-insurance/compare-cover.html	/sec/website/pet-insurance/compare-cover.html [PT,NC,L]
+RewriteRule ^/sec/tools/pet-insurance-guides.html	/sec/website/tools/pet-insurance-guides.html [PT,NC,L]
+
+RewriteRule ^/home-insurance/$	/website/home-insurance/index.html [PT,NC,L]
+RewriteRule ^/home-insurance/contents/$	/website/home-insurance/contents/index.html [PT,NC,L]
+RewriteRule ^/home-insurance/buildings/$	/website/home-insurance/buildings/index.html [PT,NC,L]
+RewriteRule ^/home-insurance/apply.html	/website/home-insurance/apply.html [PT,NC,L]
+RewriteRule ^/tools/home-insurance-guides.html	/website/tools/home-insurance-guides.html [PT,NC,L]
+
+RewriteRule ^/sec/home-insurance/$	/sec/website/home-insurance/index.html [PT,NC,L]
+RewriteRule ^/sec/home-insurance/contents/$	/sec/website/home-insurance/contents/index.html [PT,NC,L]
+RewriteRule ^/sec/home-insurance/buildings/$	/sec/website/home-insurance/buildings/index.html [PT,NC,L]
+RewriteRule ^/sec/home-insurance/apply.html	/sec/website/home-insurance/apply.html [PT,NC,L]
+RewriteRule ^/sec/tools/home-insurance-guides.html	/sec/website/tools/home-insurance-guides.html [PT,NC,L]
+
+#### SECTION THREE #####
+
+# NEW PAGES BAU
+
+# New credit card offer pages RE-WRITES ####
+RewriteRule ^/credit-cards/offers/foundation/offer\.html$ /website/credit-cards/offers/foundation/offer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/foundation/offer\.html$ /sec/website/credit-cards/offers/foundation/offer.html [PT,NC,L]
+
+RewriteRule /credit-cards/offers/low-fee/dualcard\.html$ /website/credit-cards/offers/low-fee/dualcard.html [PT,NC,L]
+RewriteRule /sec/credit-cards/offers/low-fee/dualcard\.html$ /sec/website/credit-cards/offers/low-fee/dualcard.html [PT,NC,L]
+
+################# CR109 ########## 29/12/2014#############################################################################
+#RewriteRule /credit-cards/offers/low-fee/dual-offer\.html$ /website/credit-cards/offers/low-fee/dual-offer.html [PT,NC,L]
+#RewriteRule /sec/credit-cards/offers/low-fee/dual-offer\.html$ /sec/website/credit-cards/offers/low-fee/dual-offer.html [PT,NC,L]
+
+#RewriteRule ^/credit-cards/offers/balance-transfers/offer\.html$ /website/credit-cards/offers/balance-transfers/offer.page [PT,NC,L]
+#RewriteRule ^/sec/credit-cards/offers/balance-transfers/offer\.html$ /sec/website/credit-cards/offers/balance-transfers/offer.page [PT,NC,L]
+####################### CM216160#############################################################################################
+
+############CR107##CR108### CR109 ########## 29/12/2014#############################################################################
+RewriteRule ^/credit-cards/offers/low-fee/dual-offer\.html$ /website/credit-cards/offers/low-fee/dual-offer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/low-fee/dual-offer\.html$ /sec/website/credit-cards/offers/low-fee/dual-offer.html [PT,NC,L]
+
+RewriteRule ^/credit-cards/offers/balance-transfers/offer\.html$ /website/credit-cards/offers/balance-transfers/offer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/balance-transfers/offer\.html$ /sec/website/credit-cards/offers/balance-transfers/offer.html [PT,NC,L]
+
+RewriteRule ^/credit-cards/offers/balance-transfers/offer-btcard\.html$ /website/credit-cards/offers/balance-transfers/offer-btcard.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/balance-transfers/offer-btcard\.html$ /sec/website/credit-cards/offers/balance-transfers/offer-btcard.html [PT,NC,L]
+
+RewriteRule ^/credit-cards/offers/balance-transfers/offer-btoffer\.html$ /website/credit-cards/offers/balance-transfers/offer-btoffer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/balance-transfers/offer-btoffer\.html$ /sec/website/credit-cards/offers/balance-transfers/offer-btoffer.html [PT,NC,L]
+####################### CM216160##################################################################################################
+
+RewriteRule  ^/credit-cards/offers/low-fee/dualoffer\.html$ /website/credit-cards/offers/low-fee/dualoffer.html [PT,NC,L]
+RewriteRule ^/sec/credit-cards/offers/low-fee/dualoffer\.html$ /sec/website/credit-cards/offers/low-fee/dualoffer.html [PT,NC,L]
+
+################################## CM220947 ####################################
+RewriteRule ^/mobilebankwebby/$ /assets/app/mobilebankwebby/index.html [PT,NC,L]
+
+################# CR116 ########### 25/02/2015##################################
+RewriteRule ^/mobileappaward/$ /assets/app/mobileappaward/index.html [PT,NC,L]
+####################### CM224855################################################
+
+################# CR119 ############################# 02/04/2015 #################################################
+RewriteRule /credit-cards/offers/low-fee/dual\.html$ /website/credit-cards/offers/low-fee/dual.html [PT,NC,L]
+RewriteRule /sec/credit-cards/offers/low-fee/dual\.html$ sec/website/credit-cards/offers/low-fee/dual.html [PT,NC,L]
+############################# CM230270 ###########################################################################
+
+################# CR122 ############################# 22/04/2015 ####################################################################################
+RewriteRule /credit-cards/offers/balance-transfers/1000-points\.html$ /website/credit-cards/offers/balance-transfers/1000-points.html [PT,NC,L]
+RewriteRule /sec/credit-cards/offers/balance-transfers/1000-points\.html$ sec/website/credit-cards/offers/balance-transfers/1000-points.html [PT,NC,L]
+############################# CM230272 ###############################################################################################################
+
+
+################# CR123 ############################# 22/04/2015 #####################################################################
+RewriteRule /credit-cards/offers/balance-transfers/bt3\.html$ /website/credit-cards/offers/balance-transfers/bt3.html [PT,NC,L]
+RewriteRule /sec/credit-cards/offers/balance-transfers/bt3\.html$ sec/website/credit-cards/offers/balance-transfers/bt3.html [PT,NC,L]
+############################# CM230272 ###############################################################################################
+
+################# CR125 ############################# 05/05/2015 ###########################################################################
+RewriteRule /credit-cards/offers/low-fee/dual-1000-points\.html$ /website/credit-cards/offers/low-fee/dual-1000-points.html [PT,NC,L]
+RewriteRule /sec/credit-cards/offers/low-fee/dual-1000-points\.html$ sec/website/credit-cards/offers/low-fee/dual-1000-points.html [PT,NC,L]
+############################# CM234875 #####################################################################################################
+
+
+################# CR126 ############################# 05/05/2015 ###########################################
+RewriteRule /support/social\.html$ /website/support/social.html [PT,NC,L]
+RewriteRule /sec/support/social\.html$ sec/website/support/social.html [PT,NC,L]
+
+RewriteRule /support/social/twitter-rules\.html$ /website/support/social/twitter-rules.html [PT,NC,L]
+RewriteRule /sec/support/social/twitter-rules\.html$ sec/website/support/social/twitter-rules.html [PT,NC,L]
+############################# CM234875 #####################################################################

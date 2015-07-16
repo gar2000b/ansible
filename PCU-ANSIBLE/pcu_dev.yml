@@ -1,0 +1,165 @@
+---
+# file: appservers.yml
+- hosts: local
+  connection: local
+  gather_facts: yes
+
+- hosts: tag_Name_pcu_devservers:pcu_devservers
+  gather_facts: yes
+  roles:
+      - role: common
+        tags: common
+
+      - role: java
+        tags: java
+
+      - role: ora_xe
+        tags: ora_xe
+
+      - role: oracle_install_schema
+        tags: oracle_install_schema
+
+      - role: jboss_ews_install_binary
+        jboss_ews_install_user: jboss
+        jboss_ews_install_group: jboss
+        tags: jboss_ews_install_binary
+
+      - role: jboss_eap_install_binary
+        tags: jboss_eap_install_binary
+
+      - role: jboss_ews_install_config
+        jboss_ews_install_user: jboss
+        jboss_ews_install_group: jboss
+        tags: jboss_ews_install_config
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal
+        nexus_artifact_id: pcu-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_pcu
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.dev.stubs
+        nexus_artifact_id: stubs-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_stubs
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.gateway
+        nexus_artifact_id: gateway-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_gateway
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.pcao
+        nexus_artifact_id: pcao-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_pcao
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.healthcheck
+        nexus_artifact_id: healthcheck-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_healthcheck
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.ruleservice
+        nexus_artifact_id: rule-service-acceptance-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_rule_service_acceptance
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.sss
+        nexus_artifact_id: sss-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_sss
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.restapi
+        nexus_artifact_id: rest-api-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: nexus_fetch_deployable_restapi      
+
+ #     - role: nexus_fetch
+ #       nexus_url: "https://nexus.tbdevops.com"
+ #       nexus_repository: Digital-Snapshots
+ #       nexus_group_id: com.tescobank.digital.portal.ruleservice
+ #       nexus_artifact_id: ruleservice-deployment-archive
+ #       nexus_version: LATEST
+ #       nexus_file_type: gz
+ #       tags: nexus_fetch_deployable_ruleservice
+
+      - role: jboss_eap_install_config
+        install_nexus_artifact_id: pcu-deployment-archive
+        tags: jboss_eap_install_package_pcu
+
+      - role: jboss_eap_install_module
+        module_nexus_artifact_id: pcu-deployment-archive
+        module:
+          - name: com.oracle.jdbc
+            resources: ojdbc6-1.6.jar
+            dependencies: javax.api,javax.transaction.api
+        tags: jboss_eap_install_package_pcu
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: stubs-deployment-archive
+        tags: jboss_eap_install_package_stubs
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: gateway-deployment-archive
+        tags: jboss_eap_install_package_gateway
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: pcao-deployment-archive
+        tags: jboss_eap_install_package_pcao
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: healthcheck-deployment-archive
+        tags: jboss_eap_install_package_healthcheck
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: rule-service-acceptance-deployment-archive
+        tags: jboss_eap_install_package_rule_service_acceptance
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: sss-deployment-archive
+        tags: jboss_eap_install_package_sss
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: rest-api-deployment-archive
+        tags: jboss_eap_install_package_restapi
+
+  tasks:
+      - name: jboss eap restart
+        service: name=jboss state=restarted
+        tags: jboss_eap_restart
+
+      - name: ews restart
+        sudo: True
+        sudo_user: root
+        command: "{{ jboss_ews_install_httpd_home }}/sbin/./apachectl -f {{ jboss_ews_install_httpd_conf_home }}/httpd.conf -k restart"
+        tags: ews_restart

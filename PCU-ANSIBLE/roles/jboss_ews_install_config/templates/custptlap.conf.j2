@@ -1,0 +1,178 @@
+
+# Environments Team - Portal
+# Domain Redirects Config
+
+#ServerName www.tescobank.com
+
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+ServerName {{ inventory_hostname }}
+ServerAlias {{ jboss_ews_install_vhost_serveralias }}
+        # Proxy Settings
+        ProxyRequests Off
+        
+	ProxyPreserveHost on
+        ProxyPass / http://localhost:8080/
+        ProxyPassReverse / http://localhost:8080/
+	ProxyErrorOverride On
+        ErrorDocument 500 /errors/error500.html
+        ErrorDocument 404 /errors/error404.html
+        ProxyPass /status !
+        ProxyPass /server-status !
+        RewriteEngine on
+#<Location /*>
+#Allow from all
+#AuthType None
+#Satisfy any
+#</Location>
+
+#RequestHeader unset Authorization
+
+        # Deprecated by CM146920 (modsecurity)
+        #Filter out if 'redirect:' is present in query string encoded or unencoded
+        #RewriteCond %{QUERY_STRING} ^.*((r|%72)(e|%65)(d|%64)(i|%69)(r|%72)(e|%65)(c|%63)(t|%74)(:|%3A)).* [NC,OR]
+
+        #Filter out if 'redirectAction:' is present in query string encoded or unencoded
+        #RewriteCond %{QUERY_STRING} ^.*((r|%72)(e|%65)(d|%64)(i|%69)(r|%72)(e|%65)(c|%63)(t|%74)(A|%41)(c|%63)(t|%74)(i|%69)(o|%6F)(n|%6e)(:|%3A)).* [NC,OR]
+
+        #Filter out if 'action:' is present in query string encoded or unencoded
+        #RewriteCond %{QUERY_STRING} ^.*((a|%61)(c|%63)(t|%74)(i|%69)(o|%6F)(n|%6e)(:|%3A)).* [NC]
+
+        #RewriteRule ^(.*)$ [F,L]
+
+        ###### MAINTENANCE #############################################
+        # rewrite map with banking and credit cards status (up/down)
+      #  RewriteMap upstatus prg:/opt/web/apache/conf/maintenance/outage-status.pl
+
+        # include rewrites appropriate to each service
+		# Include /opt/web/apache/conf/vhosts/maintenance.conf
+		Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/maintenance.conf
+
+        # if the maintenance environment variable is set, for this request only, don't cache
+        Header set cache-control "max-age=0,must-revalidate,post-check=0,pre-check=0" env=MAINTENANCE
+        Header set Expires -1 env=MAINTENANCE
+        ################################################################
+       #Include /opt/web/apache/conf/vhosts/siteimprovements.conf
+	Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/siteimprovements.conf
+
+#    Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/rewrite-filter.conf
+	
+	
+
+     
+ ##################################################
+
+        RewriteRule ^(/sec|/sec/)$ https://%{SERVER_NAME}/sec/home.html [R=301,L]
+       # Include conf/vhosts/tescobank-redirects.conf
+	Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/tescobank-redirects.conf
+        RewriteRule ^/sec/personal/finance/finance(.*) https://%{SERVER_NAME}/sec$1 [R=permanent]
+        RewriteRule ^/sec/personal/finance(.*) https://%{SERVER_NAME}/sec$1 [R=permanent]
+        RewriteRule ^/personal/finance/finance(.*) $1 [R=permanent]
+        RewriteRule ^/personal/finance(.*) $1 [R=permanent]
+
+        Header edit Location ^http://{{ inventory_hostname }}/portal/auth/portal/psp https://{{ inventory_hostname }}/portal/auth/portal/psp
+        Header edit Location ^http://{{ inventory_hostname }}/portal/auth/portal/sv https://{{ inventory_hostname }}/portal/auth/portal/sv
+        Header edit Location ^http://{{ inventory_hostname }}/portal/auth/portal/customer https://{{ inventory_hostname }}/portal/auth/portal/customer
+        Header edit Location ^http://{{ inventory_hostname }}/portal/portal/accounts https://{{ inventory_hostname }}/portal/portal/accounts
+
+        # SCV-940-20120501
+        RewriteCond %{REQUEST_URI} !^/health-check.page
+        RewriteRule ^(.*)\.page$ $1.html [R=permanent]
+
+        RewriteCond %{HTTP:WL-Proxy-SSL} !=true [NC]
+        RewriteRule ^(/sss/auth|/sss/authcc)$ https://%{SERVER_NAME}$1 [R=301,L]
+
+		
+        Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/rewrite-filter.conf		
+		
+        # Portal Env team
+        # IM2115392-20120510
+        ProxyPass /jms-sender balancer://denycluster/
+        ProxyPass /jmx-console balancer://denycluster/
+        ProxyPass /admin balancer://denycluster/
+        ProxyPass /acs balancer://denycluster/
+        ProxyPass /sss-ws balancer://denycluster/
+        ProxyPass /legacy/authentication-status-content.html balancer://custplapcluster/legacy/authentication-status-content.html stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+        ProxyPass /legacy balancer://denycluster
+        ProxyPass /data/private balancer://denycluster
+        ProxyPass /iw balancer://denycluster
+        ProxyPass /templatedata balancer://denycluster
+        ProxyPass /sites balancer://denycluster
+        ProxyPass /portal/portal/customer balancer://custplapcluster/portal/portal/customer stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+        # SCV-945-20120510
+        ProxyPass /portal/auth/portal/customer balancer://custplapcluster/portal/auth/portal/customer stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+                # Release 3 OA
+                ProxyPass /portal/auth/portal/psp balancer://custplapcluster/portal/auth/portal/psp stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+                ProxyPass /portal/auth/portal/sv balancer://custplapcluster/portal/auth/portal/sv stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+                ProxyPass /portal/signout balancer://custplapcluster/portal/signout stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+                ProxyPass /portal/portal/accounts balancer://custplapcluster/portal/portal/accounts stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+                ProxyPass /portal/auth/portal/accounts balancer://custplapcluster/portal/auth/portal/accounts stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+
+                # End of Release 3 OA
+#        ProxyPass /portal balancer://denycluster/
+#        ProxyPass / balancer://custplapcluster/ stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+
+
+
+       #mod_status configuration  for APM
+       <Location /server-status>
+          SetHandler server-status
+          Order Deny,Allow
+          # Only process requests from APM Collector Servers
+          Deny from All
+          Allow from 172.24.114.166 172.24.114.165 172.24.242.166 172.24.242.165
+       </Location>
+
+        <Proxy *>
+               Order deny,allow
+              Allow from all
+     </Proxy>
+
+        <Proxy balancer://custplapcluster>
+                BalancerMember http://{{ inventory_hostname }}:8080 route=node1 ttl=600
+        </Proxy>
+        <Proxy balancer://denycluster>
+                Order deny,allow
+                Deny from all
+        </Proxy>
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName tescobank.com
+                RewriteEngine on
+                #RewriteCond %{HTTP_HOST} ^tescobank.com [NC]
+                RewriteRule ^/(.*) http://www.tescobank.com/$1 [R=301,L]
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName www.tescofinance.com
+                RewriteEngine on
+                RewriteRule ^/$ http://www.tescobank.com/ [R=301,L]
+                #Include conf/vhosts/tf-redirects.conf
+Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/tf-redirects.conf
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName tescofinance.com
+                RewriteEngine on
+                RewriteRule ^/$ http://www.tescobank.com/ [R=301,L]
+                RewriteRule ^/(.*) http://www.tescofinance.com/$1 [R=301]
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName www.tescofinance.co.uk
+                RewriteEngine on
+                RewriteRule ^/(.*) http://www.tescobank.com/ [R=301,L]
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName www.tescofinance.eu
+                RewriteEngine on
+                RewriteRule ^/(.*) http://www.tescobank.com/ [R=301,L]
+</VirtualHost>
+<VirtualHost *:80>
+ServerName tescofinance.eu
+                RewriteEngine on
+                RewriteRule ^/(.*) http://www.tescobank.com/ [R=301,L]
+</VirtualHost>

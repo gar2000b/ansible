@@ -6,7 +6,7 @@ tmp: /tmp
 app_home: /opt/jboss
 
 # User variables 
-java_home: "/opt/jboss/java"
+java_home: "{{ jboss_root }}/java"
 java_user: jboss
 java_group: jboss
 
@@ -15,4 +15,3 @@ java_download_prefix: "http://download.oracle.com/otn-pub/java/jdk/"
 jdk_package: "jdk-7u51-linux-x64.tar.gz"
 jdk_package_prefix: "7u51-b13"
 jdk_folder: "jdk1.7.0_51"
-

@@ -1,0 +1,13 @@
+jboss_root: /opt/jboss
+jboss_config: "{{ jboss_root }}/config"
+jboss_keystores: "{{ jboss_config }}/keystores"
+jboss_scripts: "{{ jboss_root }}/scripts"
+jboss_packages: "{{ jboss_root }}/packages"
+jboss_home: "{{ jboss_root }}/jbosseap"
+jboss_bin: "{{ jboss_home }}/bin"
+jboss_standalone_home: "{{ jboss_home }}/standalone"
+jboss_standalone_config: "{{ jboss_standalone_home }}/configuration"
+jboss_config_file: standalone-full.xml
+jboss_port: 8080
+application_config_file: tesco.properties
+url_placeholders: url-placeholders.properties

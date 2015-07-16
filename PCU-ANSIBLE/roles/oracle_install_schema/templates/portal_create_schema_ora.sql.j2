@@ -1,0 +1,74 @@
+spool LOG_portal_create_schema_ora.txt;
+
+-- Tesco Bank PCU Oracle Database Scripts.
+-- Release Version 1.0 
+
+-- RUN THIS SCRIPT AS SYS USER
+-- THIS SPECIFIC SCRIPT ONLY TO BE RUN ON AN INITIAL SCHEMA SETUP IN DEV.
+
+-------------------------------
+-- CREATE TABLESPACE - DATA
+-------------------------------
+--CREATE TABLESPACE "PORTAL_DATA" DATAFILE 'PORTAL_DATA_01.dbf' SIZE 100M REUSE AUTOEXTEND ON NEXT 50M;
+CREATE TABLESPACE "PORTAL_DATA" DATAFILE '/u01/app/oracle/oradata/XE/portal_data_01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M;
+
+--CREATE TABLESPACE "SSS_DATA" DATAFILE 'SSS_DATA_01.dbf' SIZE 100M REUSE AUTOEXTEND ON NEXT 50M;
+CREATE TABLESPACE "SSS_DATA" DATAFILE '/u01/app/oracle/oradata/XE/sss_data_01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M;
+
+-------------------------------
+-- CREATE TABLESPACE - INDEX
+-------------------------------	
+--CREATE TABLESPACE "PORTAL_INDEX" DATAFILE 'PORTAL_INDEX_01.dbf' SIZE 100M REUSE AUTOEXTEND ON NEXT 50M;
+CREATE TABLESPACE "PORTAL_INDEX" DATAFILE '/u01/app/oracle/oradata/XE/portal_index_01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M;
+
+--CREATE TABLESPACE "SSS_INDEX" DATAFILE 'SSS_INDEX_01.dbf' SIZE 100M REUSE AUTOEXTEND ON NEXT 50M;
+CREATE TABLESPACE "SSS_INDEX" DATAFILE '/u01/app/oracle/oradata/XE/sss_index_01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M;
+
+-------------------------------
+-- CREATE DATABASE USERS
+-------------------------------
+
+-----------------------------------------------------------------------------------------------------------------
+-- SCHEMA OWNER - MOBILE (Should be LOCKED under normal circumstances, Unlock to perform maintenance if requ'd
+-----------------------------------------------------------------------------------------------------------------
+ 
+------------------------------
+-- CREATE APPLICATION USERS --
+------------------------------
+CREATE USER PCAO 
+	IDENTIFIED BY "{{ pcao_password }}" 
+	DEFAULT TABLESPACE PORTAL_DATA 
+	QUOTA UNLIMITED ON PORTAL_DATA 
+	QUOTA UNLIMITED ON PORTAL_INDEX 
+	TEMPORARY TABLESPACE TEMP;
+
+CREATE USER TBCWP_SSS 
+	IDENTIFIED BY "{{ tbcwp_sss_password }}" 
+	DEFAULT TABLESPACE SSS_DATA
+	QUOTA UNLIMITED ON SSS_DATA 
+	QUOTA UNLIMITED ON SSS_INDEX 
+	TEMPORARY TABLESPACE TEMP;
+
+---------------------------------
+-- CREATE AM/OPPERATIONS USERS --
+---------------------------------
+
+-------------------------------
+-- CREATE USER & APP ROLES 
+-------------------------------
+
+---------------------------------------------
+-- ROLE CREATE SESSION RIGHTS
+---------------------------------------------
+GRANT CREATE SESSION TO TBCWP_SSS;
+GRANT CREATE SESSION TO PCAO;
+--------------------------------------------
+-- CREATE "USER TO ROLE" RELATIONSHIPS
+--------------------------------------------
+
+----------------------------------------------------------------
+-- ADDITIONAL HUMAN DB USER TO APP ROLES - ASSIGN AS REQUIRED --
+----------------------------------------------------------------
+
+spool off;
+

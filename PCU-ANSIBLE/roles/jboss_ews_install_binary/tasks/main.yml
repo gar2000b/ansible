@@ -1,0 +1,76 @@
+---
+#- name: Stop and switch off any existing apache httpd
+#  sudo: True
+#  sudo_user: root
+#  shell: service httpd stop && chkconfig httpd off
+#  when: ansible_distribution != "CentOS"
+  # ^ conditional so that this task isn't run as Vagrant CentOS doesn't have apache httpd
+
+- name: Add the EWS group 
+  group: name="{{ jboss_ews_install_group }}" state=present
+
+- name: Add the EWS user 
+  user:  name="{{ jboss_ews_install_user }}" shell=/bin/bash createhome=yes group="{{ jboss_ews_install_group }}"
+
+- name: Create EWS home directory
+  file: path="{{ jboss_ews_install_root }}" state=directory owner="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}" mode=755
+
+- name: Install JBoss EWS dependencies
+  yum: name="{{ item }}" state=latest 
+  with_items: 
+   - mod_auth_kerb 
+   - elinks
+   - apr-devel
+   - apr-util-devel
+   - krb5-workstation
+
+- name:  Pull RHEL6 JBoss EWS package from Nexus
+  sudo: True
+  sudo_user: root
+  get_url: url="http://yumuser:T35c0Bank@nexus.tbdevops.com/nexus/content/repositories/vendor-licenced/org/jboss/jboss-ews-httpd/2.1.0-RHEL6/jboss-ews-httpd-2.1.0-RHEL6-x86_64.zip" dest="{{ jboss_ews_install_root }}" 
+  register: ews_package
+  when: ansible_distribution_major_version == "6"
+
+- name:  Pull RHEL5 JBoss EWS package from Nexus
+  sudo: True
+  sudo_user: root
+  get_url: url="http://yumuser:T35c0Bank@nexus.tbdevops.com/nexus/content/repositories/vendor-licenced/org/jboss/jboss-ews-httpd/2.1.0-RHEL5/{{ jboss_ews_install_package }}" dest="{{ jboss_ews_install_root }}" 
+  register: ews_package
+  when: ansible_distribution_major_version == "5"
+
+- debug: var=ews_package
+
+- name: Unzip EWS package
+  sudo: True
+  sudo_user: root
+  command: unzip -o "{{ ews_package.dest }}" -d "{{ jboss_ews_install_root }}" 
+
+- name: Set permissions on extract
+  file: path="{{ jboss_ews_install_root }}" owner="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}" mode=755 
+
+- name: Remove EWS package
+  sudo: True
+  sudo_user: root
+  file: path="{{ ews_package.dest }}" state=absent
+
+- name: Symlink ESW package
+  file:  path="{{ jboss_ews_install_home }}" src="{{ jboss_ews_install_unzip_dir }}" state=link owner="{{ jboss_ews_install_user }}" group="{{ jboss_ews_install_group }}" mode=755
+
+- name: Run postinstall
+  sudo: True
+  sudo_user: root
+  command: ./.postinstall  chdir="{{ jboss_ews_install_httpd_home }}"
+
+- name: Remove unused configuration 
+  sudo: True
+  sudo_user: root
+  command:  rm -f "{{ jboss_ews_install_httpd_confd_home }}/{{ item }}"  
+  with_items: 
+       - auth_kerb.conf
+       - mod_cluster.conf
+       - mod_rt.conf 
+       - mod_snmp.conf
+       - proxy_ajp.conf
+       - ssl.conf
+       - manual.conf
+       - welcome.conf

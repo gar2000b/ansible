@@ -1,0 +1,76 @@
+# Environments Team - Portal
+# Online Apply Config
+
+#NameVirtualHost *:80
+
+<VirtualHost *:80>
+ServerName onlineapply.creditcards.tescobank.com
+
+        # Proxy Settings
+		ProxyPreserveHost on
+        ProxyRequests Off
+        ProxyErrorOverride On
+		# Release 3 OA
+		ProxyPass /error !
+        DocumentRoot "{{ jboss_ews_install_httpd_home }}"
+        <Directory "{{ jboss_ews_install_httpd_home }}/error">
+        Options FollowSymLinks
+        Order allow,deny
+        Allow from all
+        </Directory>
+        ErrorDocument 502 /error/error502.html
+        Timeout 154
+		# End of Release 3 OA
+        ProxyPass /status !
+        RewriteEngine on
+	###### MAINTENANCE #############################################
+	# rewrite map with banking and credit cards status (up/down)
+#	RewriteMap upstatus prg:/opt/web/apache/conf/maintenance/outage-status.pl
+
+	# include rewrites appropriate to each service
+	Include {{ jboss_ews_install_httpd_home }}/conf/vhosts/maintenance.conf
+
+	# if the maintenance environment variable is set, for this request only, don't cache
+	Header set cache-control "max-age=0,must-revalidate,post-check=0,pre-check=0" env=MAINTENANCE
+	Header set Expires -1 env=MAINTENANCE
+	################################################################
+        
+	RewriteRule ^/$ http://www.tescobank.com/home.html [R=301,L]
+	RewriteRule ^(/sec|/sec/)$ https://%{SERVER_NAME}/sec/home.html [R=301,L]
+	RewriteRule ^/sec/personal/finance/finance(.*) https://%{SERVER_NAME}/sec$1 [R=permanent]
+	RewriteRule ^/sec/personal/finance(.*) https://%{SERVER_NAME}/sec$1 [R=permanent]
+	RewriteRule ^/personal/finance/finance(.*) $1 [R=permanent]
+	RewriteRule ^/personal/finance(.*) $1 [R=permanent]
+
+	Header edit Location ^http://onlineapply.creditcards.tescobank.com/portal/portal/cards https://onlineapply.creditcards.tescobank.com/portal/portal/cards
+	Header edit Location ^http://onlineapply.creditcards.tescobank.com/portal/auth/portal/cards https://onlineapply.creditcards.tescobank.com/portal/auth/portal/cards
+		
+        # Portal Env team
+	# IM2115392-20120510
+	ProxyPass /jms-sender balancer://denycluster/
+        ProxyPass /jmx-console balancer://denycluster/
+        ProxyPass /admin balancer://denycluster/
+        ProxyPass /acs balancer://denycluster/
+        ProxyPass /sss-ws balancer://denycluster/
+        ProxyPass /portal/portal/customer balancer://custplapcluster/portal/portal/customer stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		# Release 3 OA
+		ProxyPass /portal/auth/portal/psp balancer://custplapcluster/portal/auth/portal/psp stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		ProxyPass /portal/portal/cards balancer://custplapcluster/portal/portal/cards stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		ProxyPass /portal/cards/default balancer://custplapcluster/portal/cards/default stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		ProxyPass /portal/auth/portal/cards balancer://custplapcluster/portal/auth/portal/cards stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		# End of Release 3 OA
+		ProxyPass /portal balancer://denycluster/
+        ProxyPass / balancer://custplapcluster/ stickysession=JSESSIONID|jessionid scolonpathdelim=On nofailover=on
+		
+        <Proxy *>
+                Order deny,allow
+                Allow from all
+        </Proxy>
+        <Proxy balancer://custplapcluster>
+                BalancerMember http://custptlap.prd.uk.tescobank.org:8080 route=node1 ttl=600
+        </Proxy>
+        <Proxy balancer://denycluster>
+                Order deny,allow
+                Deny from all
+        </Proxy>
+</VirtualHost>

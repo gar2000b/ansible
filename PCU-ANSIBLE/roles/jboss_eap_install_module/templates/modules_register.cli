@@ -1,0 +1,22 @@
+# Register module as driver
+try 
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=com.oracle.jdbc,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+
+catch
+
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:remove()
+	/profile=full/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=com.oracle.jdbc,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+
+end-try
+
+
+
+
+# Add the module to global modules
+try 
+	/profile=full/subsystem=ee:read-attribute(name=global-modules,value=[{name=com.tibco.tibjms,slot=main}]
+
+catch
+
+	/profile=full/subsystem=ee:write-attribute(name=global-modules,value=[{name=com.tibco.tibjms,slot=main}]
+end-try

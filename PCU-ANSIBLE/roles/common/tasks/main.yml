@@ -1,0 +1,180 @@
+---
+- name: Create epel directory
+  sudo: True
+  shell: test -d "/usr/local/epel" || sudo mkdir -p "/usr/local/epel" && sudo chmod 777 "/usr/local/epel"
+  tags: common
+
+- name: Fetch EPEL rpm
+  sudo: True
+  get_url: url="{{ epel5_url }}" dest=/usr/local/epel
+  when: ansible_distribution_major_version == "5"
+  tags: common
+
+- name: Install EPEL rpm
+  shell: chdir=/usr/local/epel rpm -Uvh "{{ epel5_package }}" 
+  ignore_errors: True
+  when: ansible_distribution_major_version == "5"
+  tags: common
+
+- name: Fetch EPEL rpm
+  get_url: url="{{ epel6_url }}" dest=/usr/local/epel
+  when: ansible_distribution_major_version == "6"
+  tags: 
+    - common
+    - test
+
+- name: Install EPEL rpm
+  shell: chdir=/usr/local/epel rpm -Uvh "{{ epel6_package }}" 
+  ignore_errors: True
+  when: ansible_distribution_major_version == "6"
+  tags: 
+    - common
+    - test
+
+- name: Disable Mirrorlist
+  sudo: True
+  sudo_user: root
+  lineinfile: dest=/etc/yum.repos.d/epel.repo regexp='^mirrorlist' state=absent 
+  when: ansible_distribution_major_version == "6"
+  tags:
+    - common
+    - test
+
+- name: Enable baseurl 
+  sudo: True
+  sudo_user: root
+  replace: dest=/etc/yum.repos.d/epel.repo regexp='^#baseurl' replace='baseurl'
+  when: ansible_distribution_major_version == "6"
+  tags:
+    - common
+    - test
+
+- name: Replace download url 
+  sudo: True
+  sudo_user: root
+  replace: dest=/etc/yum.repos.d/epel.repo regexp='download' replace='dl' backup=yes
+  when: ansible_distribution_major_version == "6"
+  tags:
+    - common
+    - test
+
+- name: Update OS packages 
+  yum: name=* state=latest 
+  tags: common
+  when: ansible_distribution_major_version == "6"
+
+- name: Install Standard util packages for RHEL5
+  sudo: True
+  yum: name={{ item }} state=latest
+  with_items:
+    - python26
+    - wget
+    - ntp
+    - tmux
+  when: ansible_distribution_major_version == "5"
+  tags: 
+    - common
+    - ntp
+
+- name: Install Standard util packages for RHEL6/7
+  sudo: True
+  sudo_user: root
+  yum: name={{ item }} state=latest
+  with_items:
+    - ntp
+    #- ansible
+    - tmux
+    - nc
+    - python-boto
+    - python-pip
+    - python-suds
+    #- python-jinja2-26
+  when: ansible_distribution_major_version == "6"
+  tags: 
+    - common
+    - ntp
+
+#- name: Copy repo file to repo
+#  copy: src=tescobank.repo dest=/etc/yum.repos.d/
+#  tags: tb_repo
+
+- name: Configuring timezone
+  sudo: True
+  sudo_user: root
+  file: path=/etc/localtime src=/usr/share/zoneinfo/UTC state=link force=yes
+  tags:
+    - timezone
+    - common
+  
+- name: Make sysconfig writeable
+  shell: chmod 777 "/etc/sysconfig"
+  tags: common
+
+# has no effect until a restart
+- name: Configuring locale
+  lineinfile: > 
+              dest=/etc/sysconfig/i18n 
+              state=present
+              regexp='LANG="en_US.UTF-8"'
+              line='LANG="en_GB.UTF-8"'
+  tags:
+    - locale
+    - common
+  
+- name: Configuring ntp
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  tags:
+    - common
+    - ntp
+
+- name: Allow ssh agent forwarding
+  replace: dest=/etc/ssh/sshd_config regexp="^#AllowAgentForwarding yes" replace="AllowAgentForwarding yes" backup=yes
+  sudo: yes
+  sudo_user: root
+  when: ansible_distribution_major_version == "6"
+
+- name: Allow ssh tcp forwarding
+  replace: dest=/etc/ssh/sshd_config regexp="^#AllowTcpForwarding yes" replace="AllowTcpForwarding yes" backup=yes
+  sudo: yes
+  sudo_user: root
+  when: ansible_distribution_major_version == "6"
+
+- name: Starting ntp, sshd and iptables services
+  sudo: True
+  sudo_user: root
+  service: name="{{ item }}" state=started enabled=true
+  with_items: 
+    - ntpd
+    - iptables
+    - sshd
+  tags: 
+    - ntp
+    - common
+
+- name: Add wheel group
+  group: name=wheel state=present
+  tags:
+    - common
+
+- name: Adding users
+  sudo: True
+  sudo_user: root
+  user: name={{ item.name }} generate_ssh_key=yes group=wheel 
+  with_items: ssh_users
+  tags: 
+    - common
+
+- name: Adding keys to authorized_keys
+  sudo: True
+  sudo_user: root
+  authorized_key: user="{{ item.name }}" key="{{ item.key }}"
+  with_items:  ssh_users
+  tags: 
+    - common
+
+- name: Modifying wheel sudoers rights
+  sudo: True
+  sudo_user: root
+  lineinfile: "dest=/etc/sudoers state=present regexp='^#.*%wheel.*NOPASSWD' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+  tags:
+    - common

@@ -1,0 +1,23 @@
+# General configuration for the init.d scripts,
+# not necessarily for JBoss AS itself.
+
+# The username who should own the process.
+#
+JBOSS_USER=jboss
+
+# The amount of time to wait for startup
+#
+# STARTUP_WAIT=30
+
+# The amount of time to wait for shutdown
+#
+# SHUTDOWN_WAIT=30
+
+# Location to keep the console log
+#
+JBOSS_CONSOLE_LOG={{ jboss_home }}/console.log
+JBOSS_HOME={{ jboss_home }}
+JBOSS_CONFIG={{ jboss_config_file }}
+JBOSS_SYSPROP=-Djavax.xml.soap.MessageFactory=org.jboss.ws.core.soap.MessageFactoryImpl
+JBOSS_OPTS=-P={{ jboss_config }}/{{ application_config_file }}
+

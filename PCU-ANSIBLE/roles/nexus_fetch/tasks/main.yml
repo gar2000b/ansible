@@ -1,0 +1,23 @@
+---
+- name: Create download directory
+  file: path="{{ download_home }}" state=directory
+
+- name: Create extract directory
+  file: path="{{ extract_home }}" state=directory
+
+- name: Clean extract directory
+  file: path="{{ download_home }}/{{ nexus_artifact_id }}" state=absent 
+
+- name:  Download deployable from Nexus
+  sudo: True
+  sudo_user: root
+  get_url: url="{{ nexus_url }}/service/local/artifact/maven/redirect?r={{ nexus_repository }}&g={{ nexus_group_id }}&a={{ nexus_artifact_id }}&v={{ nexus_version }}&p={{ nexus_file_type }}" dest="{{ download_home }}" validate_certs=no
+  register: package
+
+- name: Create extract directory
+  file: path="{{ extract_home }}/{{ nexus_artifact_id }}" state=directory
+
+- name: Unzip the deployment package
+  sudo: True
+  sudo_user: root
+  unarchive: src={{ package.dest }} dest="{{ extract_home }}/{{ nexus_artifact_id }}" copy=no

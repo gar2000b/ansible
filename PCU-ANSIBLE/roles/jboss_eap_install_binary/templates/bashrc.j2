@@ -1,0 +1,12 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific aliases and function
+set -o vi
+
+alias cdj='cd $JBOSS_HOME'
+alias cdl='cd $JBOSS_HOME/domain/server/server-one/log'

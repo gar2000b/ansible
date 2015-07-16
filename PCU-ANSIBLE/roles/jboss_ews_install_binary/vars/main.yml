@@ -1,0 +1,10 @@
+jboss_ews_install_package: jboss-ews-httpd-2.1.0-RHEL5-x86_64.zip
+jboss_ews_install_root: /opt/jboss
+jboss_ews_install_tmp: "{{ jboss_ews_install_root }}/tmp"
+jboss_ews_install_user: webadmin
+jboss_ews_install_group: webadmin
+jboss_ews_install_home: "{{ jboss_ews_install_root }}/jbossews"
+jboss_ews_install_httpd_home: "{{ jboss_ews_install_home }}/httpd"
+jboss_ews_install_unzip_dir: jboss-ews-2.1
+jboss_ews_install_httpd_conf_home: "{{ jboss_ews_install_httpd_home }}/conf"
+jboss_ews_install_httpd_confd_home: "{{ jboss_ews_install_httpd_home }}/conf.d"

@@ -20,6 +20,8 @@
     - java
 
 - name: "Unpack Java"
+  sudo: True
+  sudo_user: root
   command: tar -C {{ app_home }} -xzf {{ tmp }}/{{ jdk_package }}
   tags:
     - java
@@ -29,6 +31,16 @@
   tags:  java
 
 - name: Change file permissions
+  sudo: True
+  sudo_user: root
   file: path={{ app_home }} owner={{ java_user }} group={{ java_group }} recurse=yes
   tags: java
 
+- name: Symlink Java
+  file:  path=/usr/bin/java src=/opt/jboss/java/bin/java state=link
+  tags:  java_symlink
+
+#- name: remove install file
+#  file: path={{ tmp }}/{{ jdk_package }} state=absent
+#  tags:
+  #   - java

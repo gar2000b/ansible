@@ -1,0 +1,5 @@
+jboss_datagrid_modules_root: jboss-datagrid-6.4.1-eap-modules-library
+jboss_datagrid_modules_archive: "{{ jboss_datagrid_modules_root }}.zip"
+
+jboss_kie_modules_root: kie-module
+jboss_kie_modules_archive: "{{ jboss_kie_modules_root }}.zip"

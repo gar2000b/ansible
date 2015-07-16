@@ -1,0 +1,16 @@
+[local]
+localhost:2222
+
+[local:vars]
+ansible_python_interpreter=/usr/bin/python2.6
+
+[pcu_devservers]
+localhost:2222
+ci56.tbdevops.com
+ci58.tbdevops.com
+ci63.tbdevops.com
+ci64.tbdevops.com
+ci65.tbdevops.com
+ec2-52-16-205-47.eu-west-1.compute.amazonaws.com
+
+[launched]

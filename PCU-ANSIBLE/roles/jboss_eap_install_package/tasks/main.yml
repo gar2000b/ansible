@@ -1,0 +1,22 @@
+---
+- name: Create extract dir
+  file: path="{{ extract_home }}" state=directory
+
+- name: Deploy all in bin folder
+  command: ls {{ extract_home }}/{{ install_nexus_artifact_id }}/bin
+  register: deployable_artifacts
+
+- name: Copy deploy files to server
+  sudo: True
+  sudo_user: root
+  template: src=deploy.cli dest="{{ extract_home }}/{{ install_nexus_artifact_id }}/{{ item }}_deploy.cli"
+  with_items: deployable_artifacts.stdout_lines
+
+- name: Ensure JBoss is running
+  service: name=jboss state=started
+
+- name: Run deploy files
+  sudo: True
+  sudo_user: jboss
+  shell: "source /home/jboss/.bash_profile; export JAVA_OPTS=-Xms1024m; {{ jboss_home }}/bin/jboss-cli.sh --connect --file={{ extract_home }}/{{ install_nexus_artifact_id }}/{{ item }}_deploy.cli"
+  with_items: deployable_artifacts.stdout_lines
