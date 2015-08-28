@@ -3,6 +3,7 @@ domain: example
 # database properties
 pcao_password: Ikaga1li
 tbcwp_sss_password: Ikaga1li 
+oatest_password: test123
 
 ansible_facts_dir: /etc/ansible/facts.d
 download_home: /tmp/pcu

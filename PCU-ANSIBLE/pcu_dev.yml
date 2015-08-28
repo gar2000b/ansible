@@ -6,7 +6,47 @@
 
 - hosts: tag_Name_pcu_devservers:pcu_devservers
   gather_facts: yes
+  vars:
+    - release_version: "LATEST"
+    - nexus_repository: "Digital-Snapshots"
+
+  pre_tasks:
+
+      - name: set repository to Digital-Snapshots if release_version contains SNAPSHOT
+        set_fact:
+          nexus_repository: "Digital-Snapshots"
+        when: release_version.find('SNAPSHOT') != -1
+        tags: always
+
+      - name: set repository to Digital-Releases if release_version does not contain SNAPSHOT
+        set_fact:
+          nexus_repository: "Digital-Releases"
+        when: release_version.find('SNAPSHOT') == -1
+        tags: always
+
+      - name: set repository to Digital-Snapshots if release_version == LATEST
+        set_fact:
+          nexus_repository: "Digital-Snapshots"
+        when: release_version == "LATEST"
+        tags: always
+
+      - name: bespoke message
+        debug: msg="The release version is {{ release_version }} and repository type is {{ nexus_repository }}..."
+        tags: always
+
+      - name: jboss eap restart
+        service: name=jboss state=restarted
+        ignore_errors: yes
+        tags: 
+          - jboss_eap_restart
+          - deploy_all_artifacts
+
+      - name: print hostname
+        debug: msg="Hostname is {{ inventory_hostname }}"
+        tags: always
+
   roles:
+
       - role: common
         tags: common
 
@@ -34,75 +74,108 @@
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.portal
         nexus_artifact_id: pcu-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_pcu
+        tags: 
+          - nexus_fetch_deployable_pcu
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.dev.stubs
         nexus_artifact_id: stubs-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_stubs
+        tags: 
+          - nexus_fetch_deployable_stubs
+          - deploy_all_artifacts
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.portal.gateway
         nexus_artifact_id: gateway-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_gateway
+        tags: 
+          - nexus_fetch_deployable_gateway
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.portal.pcao
         nexus_artifact_id: pcao-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_pcao
+        tags: 
+          - nexus_fetch_deployable_pcao
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
         nexus_repository: Digital-Snapshots
+        nexus_group_id: com.tescobank.digital.portal.ccola
+        nexus_artifact_id: ccola-deployment-archive
+        nexus_version: LATEST
+        nexus_file_type: gz
+        tags: 
+          - nexus_fetch_deployable_ccola
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
         nexus_group_id: com.tescobank.digital.portal.healthcheck
         nexus_artifact_id: healthcheck-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_healthcheck
+        tags: 
+          - nexus_fetch_deployable_healthcheck
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.portal.ruleservice
         nexus_artifact_id: rule-service-acceptance-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
         tags: nexus_fetch_deployable_rule_service_acceptance
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.sss
         nexus_artifact_id: sss-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_sss
+        tags: 
+          - nexus_fetch_deployable_sss
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: nexus_fetch
         nexus_url: "https://nexus.tbdevops.com"
-        nexus_repository: Digital-Snapshots
         nexus_group_id: com.tescobank.digital.portal.restapi
         nexus_artifact_id: rest-api-deployment-archive
-        nexus_version: LATEST
+        nexus_version: "{{ release_version }}"
         nexus_file_type: gz
-        tags: nexus_fetch_deployable_restapi      
+        tags: 
+          - nexus_fetch_deployable_restapi
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: nexus_fetch
+        nexus_url: "https://nexus.tbdevops.com"
+        nexus_group_id: com.tescobank.digital.portal.svph
+        nexus_artifact_id: svph-deployment-archive
+        nexus_version: "{{ release_version }}"
+        nexus_file_type: gz
+        tags: 
+          - nexus_fetch_deployable_svph
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
  #     - role: nexus_fetch
  #       nexus_url: "https://nexus.tbdevops.com"
@@ -125,41 +198,111 @@
             dependencies: javax.api,javax.transaction.api
         tags: jboss_eap_install_package_pcu
 
+      - role: jboss_eap_uninstall_packages
+        tags: jboss_eap_uninstall_packages
+
       - role: jboss_eap_install_package
         install_nexus_artifact_id: stubs-deployment-archive
-        tags: jboss_eap_install_package_stubs
+        undeploy_existing_artifact_pattern:
+          - "tbsb-stub-ear-1.0.0-SNAPSHOT.ear"
+          - "cms-stub-1.0.0-SNAPSHOT.war"
+          - "tbsb-stub-webapp-1.0.0-SNAPSHOT.war"
+          - "csso-stub-1.0.0-SNAPSHOT.war"
+        tags: 
+          - jboss_eap_install_package_stubs
+          - deploy_all_artifacts
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: gateway-deployment-archive
-        tags: jboss_eap_install_package_gateway
+        undeploy_existing_artifact_pattern: gateway-servlet
+        tags: 
+          - jboss_eap_install_package_gateway
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: pcao-deployment-archive
-        tags: jboss_eap_install_package_pcao
+        undeploy_existing_artifact_pattern: pcao-ui
+        tags: 
+          - jboss_eap_install_package_pcao
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: ccola-deployment-archive
+        undeploy_existing_artifact_pattern: 
+          - "ccola-ui"
+          - "bwa-stub"
+          - "experian-stub"
+          - "paf-stub"
+        tags: 
+          - jboss_eap_install_package_ccola
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: healthcheck-deployment-archive
-        tags: jboss_eap_install_package_healthcheck
+        undeploy_existing_artifact_pattern: health-check
+        tags:
+          - jboss_eap_install_package_healthcheck
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: jboss_eap_install_config_healthcheck
+        tags: 
+          - jboss_eap_install_package_healthcheck
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: rule-service-acceptance-deployment-archive
+        undeploy_existing_artifact_pattern: rule-service-acceptance
         tags: jboss_eap_install_package_rule_service_acceptance
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: sss-deployment-archive
-        tags: jboss_eap_install_package_sss
+        undeploy_existing_artifact_pattern: 
+          - sss-webapp
+          - sss-ws
+        tags: 
+          - jboss_eap_install_package_sss
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
 
       - role: jboss_eap_install_package
         install_nexus_artifact_id: rest-api-deployment-archive
-        tags: jboss_eap_install_package_restapi
+        undeploy_existing_artifact_pattern: rest-api
+        tags: 
+          - jboss_eap_install_package_restapi
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: jboss_eap_install_package
+        install_nexus_artifact_id: svph-deployment-archive
+        undeploy_existing_artifact_pattern: 
+          - "svph-ui"
+          - "message-listener"
+        tags: 
+          - jboss_eap_install_package_svph
+          - deploy_all_artifacts
+          - deploy_all_live_artifacts
+
+      - role: apm_fetch_and_install
+        tags: apm_fetch_and_install
+
+  post_tasks:
+      - name: jboss eap restart
+        service: name=jboss state=restarted
+        tags: 
+          - deploy_all_artifacts
+          - undeploy_all_artifacts
 
   tasks:
+
       - name: jboss eap restart
         service: name=jboss state=restarted
         tags: jboss_eap_restart
 
       - name: ews restart
-        sudo: True
-        sudo_user: root
-        command: "{{ jboss_ews_install_httpd_home }}/sbin/./apachectl -f {{ jboss_ews_install_httpd_conf_home }}/httpd.conf -k restart"
+        service: name=ews state=restarted
         tags: ews_restart

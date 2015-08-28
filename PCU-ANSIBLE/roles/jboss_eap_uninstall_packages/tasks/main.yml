@@ -1,0 +1,43 @@
+---
+- name: Undeploy all (Live) artifacts
+  sudo: True
+  sudo_user: jboss
+  shell: "{{ jboss_home }}/bin/jboss-cli.sh --connect --command='undeploy {{ item }}*' ; true"
+  with_items:
+    - "gateway-servlet"
+    - "pcao-ui"
+    - "ccola-ui"
+    - "bwa-stub"
+    - "experian-stub"
+    - "paf-stub"
+    - "health-check"
+    - "rule-service-acceptance"
+    - "sss-webapp"
+    - "rest-api"
+    - "svph-ui"
+    - "message-listener"
+  tags: undeploy_all_live_artifacts
+
+- name: Undeploy all artifacts
+  sudo: True
+  sudo_user: jboss
+  shell: "{{ jboss_home }}/bin/jboss-cli.sh --connect --command='undeploy {{ item }}*' ; true"
+  with_items:
+    - "gateway-servlet"
+    - "pcao-ui"
+    - "ccola-ui"
+    - "bwa-stub"
+    - "experian-stub"
+    - "paf-stub"
+    - "health-check"
+    - "rule-service-acceptance"
+    - "sss-webapp"
+    - "rest-api"
+    - "svph-ui"
+    - "message-listener"
+    - "tbsb-stub-ear"
+    - "cms-stub"
+    - "tbsb-stub-webapp"
+    - "csso-stub"
+    - "cards-creditcare-stub"
+  tags: undeploy_all_artifacts

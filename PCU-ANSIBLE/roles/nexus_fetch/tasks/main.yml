@@ -1,4 +1,7 @@
 ---
+- name: Debug message nexus
+  debug: msg="The release version is {{ release_version }} and repository type is {{ nexus_repository }}..."
+
 - name: Create download directory
   file: path="{{ download_home }}" state=directory
 
@@ -13,6 +16,9 @@
   sudo_user: root
   get_url: url="{{ nexus_url }}/service/local/artifact/maven/redirect?r={{ nexus_repository }}&g={{ nexus_group_id }}&a={{ nexus_artifact_id }}&v={{ nexus_version }}&p={{ nexus_file_type }}" dest="{{ download_home }}" validate_certs=no
   register: package
+
+- name: Clean extract directory
+  file: path="{{ extract_home }}/{{ nexus_artifact_id }}" state=absent
 
 - name: Create extract directory
   file: path="{{ extract_home }}/{{ nexus_artifact_id }}" state=directory

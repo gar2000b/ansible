@@ -55,7 +55,20 @@
   sudo_user: root
   service: name=iptables state=restarted
 
-- name: Starting up Apache
+- name: Install ews start script
+  copy: src=ews dest="/etc/init.d"
+  tags: ews_install_start_script
+
+- name: Set ews service script permissions
+  file: path=/etc/init.d/ews mode=0755
+  tags: ews_install_start_script
+
+- name: Set runlevels to run ews service on startup
   sudo: True
   sudo_user: root
-  command: "{{ jboss_ews_install_httpd_home }}/sbin/apachectl -f {{ jboss_ews_install_httpd_conf_home }}/httpd.conf -k restart"
+  shell: "/sbin/chkconfig --level 345 ews on"
+  tags: ews_install_start_script
+
+- name: Starting up Apache
+  service: name=ews state=restarted
+  tags: ews_install_start_script

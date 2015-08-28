@@ -52,6 +52,12 @@
   file:  path='{{ jboss_root }}/jbosseap' src={{ eap_major_version }} state=link
   tags:  jboss_eap_install
 
+- name: Symlink shorter jb EAP package
+  file: path='/jb' src='{{ jboss_root }}/jbosseap' state=link
+  tags:
+    - jboss_short_jb_symlink
+    - jboss_eap_install
+
 - name: Change file permissions
   file: path={{ jboss_root }} owner=jboss group=jboss recurse=yes
   tags:  jboss_eap_install
@@ -75,6 +81,14 @@
 - name: Set JBoss service script permissions
   file: path=/etc/init.d/jboss mode=0755
   tags: jboss_eap_install
+
+- name: Set runlevels to run eap service on startup
+  sudo: True
+  sudo_user: root
+  shell: "/sbin/chkconfig --level 345 jboss on"
+  tags:
+    - set_runlevels_eap
+    - jboss_eap_install
 
 - name: Increase file open security limits
   lineinfile: dest=/etc/security/limits.conf line="{{ item.line }}"

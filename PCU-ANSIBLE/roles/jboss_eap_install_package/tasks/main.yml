@@ -15,6 +15,12 @@
 - name: Ensure JBoss is running
   service: name=jboss state=started
 
+- name: Undeploy exisitng artifacts
+  sudo: True
+  sudo_user: jboss
+  shell: "{{ jboss_home }}/bin/jboss-cli.sh --connect --command='undeploy {{ item }}*' ; true"
+  with_items: "{{ undeploy_existing_artifact_pattern }}"
+
 - name: Run deploy files
   sudo: True
   sudo_user: jboss

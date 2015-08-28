@@ -2,8 +2,14 @@
 - name: Ensure JBoss is stopped
   service: name=jboss state=stopped
 
-- name: Pull down the template file for upload
-  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/{{ application_config_file }}" dest="/tmp/{{ application_config_file }}" flat=yes fail_on_missing=yes
+- name: Pull down the template file for upload to localhost
+  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/environments/local-dev/portal/config/{{ application_config_file }}" dest="/tmp/{{ application_config_file }}" flat=yes fail_on_missing=yes
+  when: inventory_hostname == "localhost"
+  tags: install_tesco_props
+
+- name: Pull down the template file for upload to ci58
+  fetch: src="{{ extract_home }}/{{ install_nexus_artifact_id }}/config/environments/ci58/portal/config/{{ application_config_file }}" dest="/tmp/{{ application_config_file }}" flat=yes fail_on_missing=yes
+  when: inventory_hostname == "ci58.tbdevops.com"
   tags: install_tesco_props
 
 - name: Install package supplied configuration into Application configuration directory
@@ -57,3 +63,11 @@
 - name: Install sss-redirects-props
   shell: "chown jboss:jboss {{ jboss_config }}/saml-url-properties.xml"
   tags: install_sss_redirect_props
+
+- name: Copy over jgroup configuration
+  shell: "cp -f /tmp/pcu/deploy/pcu-deployment-archive/config/jdg-default-jgroups-tcp.xml {{ jboss_config }}/jdg-default-jgroups-tcp.xml"
+  tags: install_jgroup_config
+
+- name: Update standalone.conf with 512Mb Perm Gem
+  replace: dest='{{ jboss_home }}/bin/standalone.conf' regexp='JAVA_OPTS="-Xms1303m -Xmx1303m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true"' replace='JAVA_OPTS="-Xms1303m -Xmx1303m -XX:MaxPermSize=512m -Djava.net.preferIPv4Stack=true"'
+  tags: update_standalone_config

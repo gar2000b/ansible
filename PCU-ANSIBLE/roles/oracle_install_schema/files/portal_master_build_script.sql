@@ -29,6 +29,7 @@ set termout ON;
 set termout OFF;
 @@portal_create_objects_tbcwp_sss_ora.sql
 @@portal_create_objects_pcao_ora.sql
+@@portal_create_objects_cco_ora.sql
 
 set termout ON;
 /* Executing portal_grant_permissions_ora.sql (Step 4 of 5) */

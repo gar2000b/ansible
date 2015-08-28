@@ -1,0 +1,47 @@
+---
+
+# Download and install agent-java.tar
+# -----------------------------------
+
+- name: Create download directory
+  file: path="{{ download_home }}" state=directory
+
+- name: Clean extract directory
+  file: path="{{ download_home }}/apm-agent" state=absent 
+
+- name:  Download deployable from Nexus
+  sudo: True
+  sudo_user: root
+  get_url: url="https://nexus.tbdevops.com/service/local/repositories/vendor-licenced/content/apm/agent/java-app/agent-java-app.tar" dest="{{ download_home }}" validate_certs=no
+  register: package
+
+- name: Create extract directory
+  file: path="/opt/apm/javaagent" state=directory
+
+- name: Unzip apm agent
+  sudo: True
+  sudo_user: root
+  unarchive: src={{ package.dest }} dest="/opt/apm/javaagent" copy=no
+
+# Download and install ep-agent-unix-9.7.1.16.tar
+# -----------------------------------------------
+
+- name: Create download directory
+  file: path="{{ download_home }}" state=directory
+
+- name: Clean extract directory
+  file: path="{{ download_home }}/ap-agent-unix" state=absent 
+
+- name:  Download deployable from Nexus
+  sudo: True
+  sudo_user: root
+  get_url: url="https://nexus.tbdevops.com/service/local/repositories/vendor-licenced/content/apm/ep-agent-unix/9.7.1.16/ep-agent-unix-9.7.1.16.tar" dest="{{ download_home }}" validate_certs=no
+  register: package
+
+- name: Create extract directory
+  file: path="/opt/apm" state=directory
+
+- name: Unzip ep agent unix
+  sudo: True
+  sudo_user: root
+  unarchive: src={{ package.dest }} dest="/opt/apm" copy=no

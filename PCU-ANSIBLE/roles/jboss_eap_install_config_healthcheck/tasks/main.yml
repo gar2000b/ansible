@@ -1,0 +1,4 @@
+---
+- name: Copy over healthcheck.properties
+  shell: "cp -f /tmp/pcu/deploy/healthcheck-deployment-archive/config/healthcheck.properties {{ jboss_config }}/healthcheck.properties"
+  tags: jboss_eap_install_config_healthcheck
